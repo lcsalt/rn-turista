@@ -1,0 +1,15 @@
+export default {
+    PRIMARY: '#00A991',
+    WHITE: '#FFF',
+    WHITE_DARK: '#F4F5F7',
+    PRIMARY_LIGHT: '#ECF8F7',
+    PRIMARY_DARK: '#007F6D',
+    PRIMARY_VERYDARK: '#005C4E',
+    TEXT: '#8898AA',
+    TEXT_LIGHT: '#ADB5BD',
+    TEXT_DARK:'#525F7F',
+    ERROR: '#F5365C',
+    GUIDE: '#FC603A',
+    TURIST: '#EB4E70'
+
+}
