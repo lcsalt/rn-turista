@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, Button } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { AppLoading } from "expo";
 import * as Font from 'expo-font';
 
@@ -7,7 +7,6 @@ import Colors from './constants/Colors.js';
 import Boton from './components/Boton.js';
 import LinkBoton from './components/LinkBoton.js';
 import MarginTop from './decorator_components/MarginTop.js';
-import BackTextBoton from './components/BackTextBoton.js';
 
 
 const fetchFonts = () => {
