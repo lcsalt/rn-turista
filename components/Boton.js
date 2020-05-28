@@ -5,7 +5,6 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import Colors from "../constants/Colors.js";
 
 const Boton = (props) => {
-
     return (
     <TouchableOpacity style={styles.buttonStyle}>
       <Text style={styles.textStyle}>{props.text}</Text>
@@ -15,7 +14,7 @@ const Boton = (props) => {
 
 Boton.propTypes = {
   text: PropTypes.string.isRequired,
-  //onPress: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
