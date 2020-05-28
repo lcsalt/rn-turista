@@ -7,8 +7,8 @@ import BackArrow from '../assets/backArrow.svg';
 
 const BackTextBoton = (props) => {
 
-    return (
-    <TouchableOpacity style={styles.buttonStyle}>
+  return (
+    <TouchableOpacity style={styles.buttonStyle} onPress={props.onPress}>
       <BackArrow  width={12.25} height={17.5}fill={props.color}/>
       <Text style={{...styles.textStyle, color: props.color}}>{props.text}</Text>
     </TouchableOpacity>
@@ -17,7 +17,7 @@ const BackTextBoton = (props) => {
 
 BackTextBoton.propTypes = {
   text: PropTypes.string.isRequired,
-  //onPress: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
