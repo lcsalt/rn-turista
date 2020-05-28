@@ -11,7 +11,7 @@ const UnloggedHome = (props) => {
     <View style={styles.screen}>
       <View style={styles.container}>
         <Image
-          source={require("../assets/inicioImg.png")}
+          source={require("../assets/images/inicioImg.png")}
           style={styles.image}
           resizeMode="cover"
         ></Image>
