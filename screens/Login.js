@@ -2,10 +2,12 @@ import React from "react";
 import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 
 import { colors } from "../constants";
+import BackTextBoton from '../components/BackTextBoton.js';
 
 const Login = (props) => {
     return(
         <View style={styles.screen}>
+            <BackTextBoton text="Inicio de Sesión" color={colors.PRIMARY} onPress={() => props.navigation.goBack()}/>
             <Text style={styles.text}>Login</Text>
         </View>
     );

@@ -38,7 +38,8 @@ const UnloggedHome = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.WHITE
+    backgroundColor: colors.WHITE,
+    justifyContent: "center",
   },
   containerTop: {
     marginTop: Dimensions.get('window').height * 10 / 100,
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: "100%",
+    width: "95%",
     height: "54%",
   },
   logoText: {
