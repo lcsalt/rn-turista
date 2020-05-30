@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
+import { colors } from "../constants";
 
-import Colors from "../constants/Colors.js";
 
 const Boton = (props) => {
     return (
-    <TouchableOpacity style={styles.buttonStyle}>
+    <TouchableOpacity style={styles.buttonStyle} onPress={props.onPress}>
       <Text style={styles.textStyle}>{props.text}</Text>
     </TouchableOpacity>
   );
@@ -20,15 +20,15 @@ Boton.propTypes = {
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: 14,
-    color: Colors.WHITE,
+    color: colors.WHITE,
     textAlign: "center",
-    fontFamily: "open-sans-bold",
+    fontFamily: 'openSansBold',
   },
 
   buttonStyle: {
     paddingHorizontal: 55,
     paddingVertical: 13,
-    backgroundColor: Colors.PRIMARY,
+    backgroundColor: colors.PRIMARY,
     borderRadius: 5,
   },
 });

@@ -1,59 +1,68 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 
-import Colors from "../constants/Colors.js";
+
 import Boton from "../components/Boton.js";
 import LinkBoton from "../components/LinkBoton.js";
 import MarginTop from "../decorator_components/MarginTop.js";
+import { colors, images } from "../constants";
 
-const UnloggedHome = (props) => {
+const UnloggedHome = (props) => {  
+
   return (
     <View style={styles.screen}>
-      <View style={styles.container}>
+
+      <View style={styles.containerTop}>
         <Image
-          source={require("../assets/images/inicioImg.png")}
+          source={images.inicioImg}
           style={styles.image}
-          resizeMode="cover"
+          resizeMode="contain"
         ></Image>
         <Text style={styles.logoText}>Turista</Text>
       </View>
 
 
-      <View style={styles.container}>
-        <Boton text={"EMPEZAR"} onPress={() => {}} />
+      <View style={styles.containerBottom}>
+        <Boton text={"EMPEZAR"} onPress={() => {console.log('hola')}} />
         <MarginTop size={40}>
           <Text style={styles.textHome}>¿Ya tienes cuenta?</Text>
           <LinkBoton text={"Iniciar sesión"} />
         </MarginTop>
       </View>
+      
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.WHITE,
-    marginVertical: 40,
+    backgroundColor: colors.WHITE
   },
-  container: {
-    marginTop: 100,
-    paddingHorizontal: 40,
+  containerTop: {
+    marginTop: Dimensions.get('window').height * 10 / 100,
+    paddingHorizontal: Dimensions.get('window').width * 9 / 100,
+    alignItems: "center",
+  },
+  containerBottom: {
+    marginBottom: Dimensions.get('window').height * 10 / 100,
+    paddingHorizontal: Dimensions.get('window').width * 9 / 100,
     alignItems: "center",
   },
   image: {
-    width: "95%",
-    height: 255,
+    width: "100%",
+    height: "54%",
   },
   logoText: {
-    fontSize: 53,
-    fontFamily: "paytone-one",
-    color: Colors.PRIMARY,
+    fontSize: Dimensions.get('window').height * 6.6 / 100,
+    fontFamily: 'paytoneOne',
+    color: colors.PRIMARY,
   },
   textHome: {
-    fontFamily: "open-sans-semibold",
+    fontFamily: 'openSansSemibold',
     fontSize: 14,
-    color: Colors.TEXT,
+    color: colors.TEXT,
   },
 });
 

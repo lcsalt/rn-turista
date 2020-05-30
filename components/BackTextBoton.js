@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-import Colors from "../constants/Colors.js";
 import BackArrow from '../assets/backArrow.svg';
 
 const BackTextBoton = (props) => {
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
       fontSize: 16,
       color: Colors.PRIMARY,
       textAlign: "center",
-      fontFamily: "open-sans-bold",
+      fontFamily: 'openSansBold',
       marginLeft: 30
     },
   
