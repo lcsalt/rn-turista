@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-import Colors from "../constants/Colors.js";
+import { colors } from "../constants";
+
 
 const LinkBoton = (props) => {
 
@@ -21,9 +22,9 @@ LinkBoton.propTypes = {
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: 16,
-    color: Colors.PRIMARY,
+    color: colors.PRIMARY,
     textAlign: "center",
-    fontFamily: "open-sans-bold",
+    fontFamily: 'openSansBold',
   },
 
   buttonStyle: {
