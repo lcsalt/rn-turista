@@ -1,6 +1,7 @@
+import 'react-native-gesture-handler';
 import React, { useState } from "react";
 import { AppLoading } from "expo";
-import 'react-native-gesture-handler';
+
 
 import { functions } from './constants';
 import LoginRegisterNavigation from "./navigation/LoginRegisterNavigation.js"
