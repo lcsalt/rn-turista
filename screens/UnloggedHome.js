@@ -23,10 +23,10 @@ const UnloggedHome = (props) => {
 
 
       <View style={styles.containerBottom}>
-        <Boton text={"EMPEZAR"} onPress={() => {console.log('hola')}} />
+        <Boton text={"EMPEZAR"} onPress={() => {props.navigation.navigate('Singup')}} />
         <MarginTop size={40}>
           <Text style={styles.textHome}>¿Ya tienes cuenta?</Text>
-          <LinkBoton text={"Iniciar sesión"} />
+          <LinkBoton text={"Iniciar sesión"} onPress={() => {props.navigation.navigate('Singup')}} />
         </MarginTop>
       </View>
       

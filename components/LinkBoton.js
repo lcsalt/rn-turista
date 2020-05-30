@@ -8,7 +8,7 @@ import { colors } from "../constants";
 const LinkBoton = (props) => {
 
     return (
-    <TouchableOpacity style={styles.buttonStyle}>
+    <TouchableOpacity style={styles.buttonStyle} onPress={props.onPress}>
       <Text style={styles.textStyle}>{props.text}</Text>
     </TouchableOpacity>
   );
