@@ -33,7 +33,7 @@ const Login = (props) => {
           />
         <View style={styles.box}></View>
         <View style={styles.boton}>
-          <Boton text={"Entrar"} onPress={() => {}} />
+          <Boton text={"Entrar"} onPress={() => {props.navigation.navigate("HomeNavigation")}} />
         </View>
       </View>
       </ImageBackground>

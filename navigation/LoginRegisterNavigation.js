@@ -6,6 +6,8 @@ import { createStackNavigator, TransitionPresets, CardStyleInterpolators} from '
 import UnloggedHome from '../screens/UnloggedHome.js';
 import Login from '../screens/Login.js';
 import SignupNavigation from './SignupNavigation.js';
+//temporalmente
+import HomeNavigation from './HomeNavigation.js';
 
 const Stack = createStackNavigator();
 const config = {
@@ -41,6 +43,7 @@ function LoginRegisterNavigation() {
       <Stack.Screen  name="UnloggedHome" component={UnloggedHome} />
       <Stack.Screen  name="Login" options={{gestureDirection: 'horizontal-inverted'}}component={Login} />
       <Stack.Screen  name="SignupNavigation" component={SignupNavigation} />
+      <Stack.Screen  name="HomeNavigation" component={HomeNavigation} />
     </Stack.Navigator>
    </NavigationContainer>
   );
