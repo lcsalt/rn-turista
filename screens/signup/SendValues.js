@@ -3,12 +3,14 @@ import { StyleSheet, View, Text } from "react-native";
 import { connect } from "react-redux";
 import { CommonActions } from "@react-navigation/native";
 
+
 import { colors } from "../../constants";
 
 const SendValues = (props) => {
   const [isSendComplete, setIsSendComplete] = useState(false);
 
   const values = props.user;
+
 
   const confirmarRegistro = () => {
     setTimeout(() => {
@@ -27,14 +29,7 @@ const SendValues = (props) => {
   }
   return (
     <View>
-      {props.navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            { name: "Login" },
-          ],
-        })
-      )}
+      {props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Login" }]}))}
     </View>
   );
 };

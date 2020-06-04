@@ -14,24 +14,26 @@ const TxtInput = (props) => {
     styles.shadow,
     //props.success && styles.focus,
     props.error && styles.error,
+    props.alternative && styles.alternative
   ];
 
+  const innerInputStyles = [
+    styles.input,
+    props.alternative && styles.alternativeInner,
+  ]
+
+  const outerInputStyles = [
+    styles.outer,
+    props.alternative && styles.alternativeOuter,
+  ]
+
   return (
-      <View
-        style={{
-          overflow: "hidden",
-          paddingBottom: 5,
-          width: "70%",
-          maxWidth: "80%",
-          marginTop: 15,
-          marginBottom: 15,
-        }}
-      >
+      <View style={outerInputStyles}>
         <View style={inputStyles}>
           <TextInput
             placeholder={props.placeholder}
             placeholderTextColor={colors.TEXT_LIGHT}
-            style={styles.input}
+            style={innerInputStyles}
             value={props.value}
             secureTextEntry={props.isPassword}
             textContentType={props.type}
@@ -46,8 +48,17 @@ const TxtInput = (props) => {
 };
 
 const styles = StyleSheet.create({
+  outer: {
+    overflow: "hidden",
+    paddingBottom: 5,
+    width: "70%",
+    maxWidth: "80%",
+    marginTop: 15,
+    marginBottom: 15,
+  },
   input: {
-    borderRadius: 0,
+    borderRadius: 4,
+    padding: 10,
     borderColor: "transparent",
     height: 44,
     backgroundColor: "#FFFFFF",
@@ -74,6 +85,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     elevation: 4,
   },
+  alternative: {
+    borderWidth:0,
+    borderRadius: 5,
+    borderBottomColor: 'transparent',
+    shadowColor: '#C1C6CC',
+    shadowRadius: 8,
+    shadowOpacity: 0.01,
+    elevation: 2,
+  },
+  alternativeInner: {
+    borderRadius: 5,
+    padding: 10,
+    borderColor: "transparent",
+    height: 55,
+  },
+  alternativeOuter : {
+    width: "82%",
+    maxWidth: "85%",
+    marginTop: 15,
+    marginBottom: 15,
+  }
 });
 
 export default TxtInput;
