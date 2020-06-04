@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { colors } from "../constants";
 import Home from '../screens/home/Home.js';
 import Perfil from '../screens/home/Perfil.js';
 import Mochila from '../screens/home/Mochila.js';
@@ -13,7 +14,7 @@ function HomeNavigation()  {
     //<NavigationContainer>
       <Tab.Navigator initialRouteName="Mapa" 
                 tabBarOptions={{
-                    activeTintColor: 'tomato',
+                    activeTintColor: colors.PRIMARY,
                     inactiveTintColor: 'gray',
       }}>
         <Tab.Screen name="Perfil" component={Perfil} />
