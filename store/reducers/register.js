@@ -1,4 +1,4 @@
-import { SET_IDENTIDAD, SET_CUENTA, SET_ROL, RESET_VALUES } from '../actions/register.js';
+import { SET_IDENTIDAD, SET_CUENTA, SET_ROLE, RESET_VALUES } from '../actions/register.js';
 
 const initialState = {
     nombre: '',
@@ -8,7 +8,7 @@ const initialState = {
     email: '',
     celular: '',
     password: '',
-    rol: '',
+    role: '',
 }
 
 const registerReducer = (state = initialState, action) => {
@@ -24,9 +24,9 @@ const registerReducer = (state = initialState, action) => {
                 email: action.email,
                 celular: action.celular,
                 password: action.password}  
-        case SET_ROL:
+        case SET_ROLE:
             return {...state,
-                rol: action.rol}
+                role: action.role}
         case RESET_VALUES:
             return{...state, 
                 nombre: action.nombre,
@@ -36,7 +36,7 @@ const registerReducer = (state = initialState, action) => {
                 email: action.email,
                 celular: action.celular,
                 password: action.password,
-                rol: action.rol,
+                rol: action.role,
             }
         default:
             return state;

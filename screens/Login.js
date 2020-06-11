@@ -1,39 +1,68 @@
-import React from "react";
-import { StyleSheet, View, Text, ImageBackground, Dimensions } from "react-native";
+import React, { useState, } from "react";
+import { StyleSheet, View, Text, ImageBackground, Dimensions,  Modal, ActivityIndicator } from "react-native";
+import { useDispatch } from 'react-redux';
 
+import { login } from '../store/actions/auth';
 import { colors, images } from "../constants";
 import BackTextBoton from "../components/BackTextBoton.js";
 import Boton from '../components/Boton.js';
+import LoadingBoton from '../components/LoadingBoton.js';
 import TxtInput from '../components/TxtInput.js';
 
 const Login = (props) => {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (value) =>{
+    setEmail(value);
+  };
+  const handlePasswordChange = (value) =>{
+    setPassword(value);
+  };
+  
+  const dispatch = useDispatch();
+  const handleLogin = () =>{
+      setIsLoggingIn(true);
+      dispatch(login({'email': email, 'password': password }));
+      //setIsLoggingIn(false);
+  }
+
   return (
     <View style={styles.screen}>
     <ImageBackground source={images.backgroundImg}  style={{width: '100%', height: '100%'}}>
     <BackTextBoton text="Inicio de Sesión" color={colors.WHITE} onPress={() => props.navigation.navigate("UnloggedHome")}/>
       <View style={styles.login}>
-        
+      
         <Text style={styles.logoText}>Turista</Text>
         
         <View style={styles.box}></View>
         <TxtInput
             placeholder={"E-mail"}
             isPassword={false}
-            onChangeText={()=>{}}
+            value={email}
+            onChangeText={handleEmailChange}
             onBlur={()=>{}}
             keyboardType={'email-address'}
             alternative={true}
+            autoCapitalize={'none'} 
           />
           <TxtInput
             placeholder={"Contraseña"}
             isPassword={true}
-            onChangeText={()=>{}}
+            value={password}
+            onChangeText={handlePasswordChange}
             onBlur={()=>{}}
             alternative={true}
+            autoCapitalize={'none'} 
           />
         <View style={styles.box}></View>
         <View style={styles.boton}>
-          <Boton text={"Entrar"} onPress={() => {props.navigation.navigate("HomeNavigation")}} />
+          {isLoggingIn ? (
+            <LoadingBoton />
+          ) : (
+            <Boton text={"Entrar"} onPress={handleLogin} />
+          )}
         </View>
       </View>
       </ImageBackground>
@@ -45,6 +74,12 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.PRIMARY,
+  },
+  screenModal: {
+    backgroundColor: colors.WHITE,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   login: {
     alignSelf: 'center',
@@ -68,8 +103,21 @@ const styles = StyleSheet.create({
   },
   box: {
     marginVertical: Dimensions.get('window').height * 2 / 100,
-  }
+  },
+  text: {
+    color: colors.TEXT_LIGHT,
+    fontSize: 12,
+    fontFamily: "openSans",
+  },
 
 });
 
 export default Login;
+
+
+/*<Modal animationType="fade" transparent={true} visible={isLoggingIn}>
+      <View style={styles.screenModal}>
+        <ActivityIndicator size="small" color={colors.PRIMARY} />
+        <Text style={styles.text}>Iniciando sesión...</Text>
+      </View>
+    </Modal> */

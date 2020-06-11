@@ -11,7 +11,6 @@ const Tab = createBottomTabNavigator();
 
 function HomeNavigation()  {
   return (
-    //<NavigationContainer>
       <Tab.Navigator initialRouteName="Mapa" 
                 tabBarOptions={{
                     activeTintColor: colors.PRIMARY,
@@ -21,7 +20,6 @@ function HomeNavigation()  {
         <Tab.Screen name="Mapa" component={Home} />
         <Tab.Screen name="Mochila" component={Mochila} />
       </Tab.Navigator>
-    //</NavigationContainer>
   );
 }
 

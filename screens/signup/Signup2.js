@@ -69,6 +69,7 @@ const Signup2 = (props) => {
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")} 
                 keyboardType={'email-address'}
+                autoCapitalize={'none'} 
             />
             <ErrorMessage errorValue={touched.email && errors.email} />
 
@@ -87,7 +88,8 @@ const Signup2 = (props) => {
                 placeholder={'Contraseña'}
                 value={values.password}
                 onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")} 
+                onBlur={handleBlur("password")}
+                autoCapitalize={'none'} 
             />
             <ErrorMessage errorValue={touched.password && errors.password} />
 

@@ -40,6 +40,7 @@ const TxtInput = (props) => {
             onChangeText={props.onChangeText}
             onBlur={props.onBlur}
             keyboardType={props.keyboardType}
+            autoCapitalize={props.autoCapitalize}
           />
         </View>
       </View>
