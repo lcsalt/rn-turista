@@ -1,13 +1,10 @@
 import React from "react";
 import { Easing } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets, CardStyleInterpolators} from '@react-navigation/stack';
 
 import UnloggedHome from '../screens/UnloggedHome.js';
 import Login from '../screens/Login.js';
 import SignupNavigation from './SignupNavigation.js';
-//temporalmente
-import HomeNavigation from './HomeNavigation.js';
 
 const Stack = createStackNavigator();
 const config = {
@@ -31,7 +28,6 @@ const closeConfig = {
 
 function LoginRegisterNavigation() {
   return (
-    <NavigationContainer>
     <Stack.Navigator  initialRouteName="UnloggedHome" 
                       screenOptions={{headerShown: false,
                                     gestureEnabled: true,
@@ -43,9 +39,7 @@ function LoginRegisterNavigation() {
       <Stack.Screen  name="UnloggedHome" component={UnloggedHome} />
       <Stack.Screen  name="Login" options={{gestureDirection: 'horizontal-inverted'}}component={Login} />
       <Stack.Screen  name="SignupNavigation" component={SignupNavigation} />
-      <Stack.Screen  name="HomeNavigation" component={HomeNavigation} />
-    </Stack.Navigator>
-   </NavigationContainer>
+      </Stack.Navigator>
   );
 }
 

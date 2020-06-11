@@ -4,7 +4,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import { Field, Form, Formik, FormikProps } from "formik";
 import * as yup from 'yup';
 
-import {setRol} from '../../store/actions/register.js'
+import {setRole} from '../../store/actions/register.js'
 import { colors } from "../../constants";
 import BackTextBoton from "../../components/BackTextBoton.js";
 import Boton from "../../components/Boton.js"
@@ -14,20 +14,20 @@ import ErrorMessage from "../../components/ErrorMessage.js";
 
 
 const Signup3 = (props) => {
-  const rol = useSelector(state => state.register.rol);
+  const role = useSelector(state => state.register.role);
  
   //envía valores a reducer
   const dispatch = useDispatch();
   const setValues = (values) =>{
-    dispatch(setRol(values));
+    dispatch(setRole(values));
   };
 
   //opciones rol
-  const opcionesRol = ['Elija una opción','Turista', 'Guía']
+  const opcionesRole = ['Elija una opción','Turista', 'Guía']
   //validaciones de formulario
   const validationSchema = yup.object().shape({
-    rol: yup.string()
-      .label('Rol')
+    role: yup.string()
+      .label('Role')
       .lowercase()
       .matches(/(guía|turista)/,'Elija una opción' )
       .required('Debe elegir una opción')
@@ -43,7 +43,7 @@ const Signup3 = (props) => {
       />
       
       <Formik
-        initialValues={{ rol: rol}}
+        initialValues={{ role: role}}
         onSubmit={(values) => {
                             setValues(values);
                             
@@ -56,8 +56,8 @@ const Signup3 = (props) => {
           <View style={styles.form}>
             <Text style={styles.text}>¿Serás un Guía o un Turista?</Text>
 
-            <Field name='rol' placeholder='Rol' component={SelectInput} options={opcionesRol} />
-            <ErrorMessage errorValue={touched.rol && errors.rol} />
+            <Field name='role' placeholder='Role' component={SelectInput} options={opcionesRole} />
+            <ErrorMessage errorValue={touched.role && errors.role} />
 
             <View style={styles.boton}>
             <Boton onPress={handleSubmit}

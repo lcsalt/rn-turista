@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import { CommonActions } from "@react-navigation/native";
+import { Alert } from 'react-native';
 
 
 import { colors } from "../../constants";
@@ -13,16 +14,31 @@ const SendValues = (props) => {
 
 
   const confirmarRegistro = () => {
-    setTimeout(() => {
-      console.log(values);
-      setIsSendComplete(true);
-    }, 3000);
-  };
+    console.log(values);
+    fetch('https://sheltered-bastion-34059.herokuapp.com/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values),
+    })
+    .then((response) => {
+      console.log(response.status);
+      if (response.status != 200){
+        Alert.alert('Error', 'El registro no pudo realizarse.');
+        props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "SignupNavigation" }]}))
+      }else{
+        setIsSendComplete(true);
+      }
+    })
+    };
+    
 
   if (!isSendComplete) {
     return (
       <View style={styles.screen}>
         {confirmarRegistro()}
+        <ActivityIndicator size="small" color={colors.PRIMARY} />
         <Text style={styles.text}>Confirmando registro...</Text>
       </View>
     );
@@ -45,6 +61,7 @@ const styles = StyleSheet.create({
     fontFamily: "openSansSemibold",
     fontSize: 14,
     color: colors.TEXT,
+    marginTop: 10,
   },
 });
 

@@ -1,23 +1,27 @@
 import 'react-native-gesture-handler';
 import React, { useState } from "react";
 import { AppLoading } from "expo";
-import { createStore, combineReducers} from 'redux';
+import { createStore, combineReducers, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import { functions } from './constants';
-import LoginRegisterNavigation from "./navigation/LoginRegisterNavigation.js"
+import MainNavigation from "./navigation/MainNavigation.js"
 //reducers
-import registerReducer from './store/reducers/register.js'
+import registerReducer from './store/reducers/register.js';
+import authReducer from './store/reducers/auth.js';
 
-// acá van todos los reducers
-const unloggedReducer = combineReducers({
+// este Store es usado cuando no esta loggeado
+const authenticationReducer = combineReducers({
   register: registerReducer,
+  auth: authReducer,
 })
-const unloggedStore = createStore(unloggedReducer);
+const authenticationStore = createStore(authenticationReducer, applyMiddleware(thunkMiddleware));
 
 
 export default function App() {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+  
 
   if (!isLoadingComplete) {
     return (
@@ -30,8 +34,8 @@ export default function App() {
   }
 
   return(
-      <Provider store={unloggedStore}>
-         <LoginRegisterNavigation />
+      <Provider store={authenticationStore}>
+         <MainNavigation />
       </Provider>
   );
 }

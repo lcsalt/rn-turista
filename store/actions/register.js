@@ -1,6 +1,6 @@
 export const SET_IDENTIDAD = 'SET_IDENTIDAD';
 export const SET_CUENTA = 'SET_CUENTA';
-export const SET_ROL = 'SET_ROL';
+export const SET_ROLE = 'SET_ROLE';
 export const RESET_VALUES = 'RESET_VALUES';
 
 export const setIdentidad = (identidad) => {
@@ -20,9 +20,9 @@ export const setCuenta = (cuenta) => {
             };
 }
 
-export const setRol = (rol) => {
-    return { type: SET_ROL,
-             rol: rol.rol,
+export const setRole = (role) => {
+    return { type: SET_ROLE,
+             role: role.role,
     };
 }
 
@@ -35,6 +35,6 @@ export const resetValues = () => {
              email: "",
              celular: "",
              password: "",
-             rol: "",
+             role: "",
             };
 }
