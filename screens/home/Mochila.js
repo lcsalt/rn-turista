@@ -8,6 +8,8 @@ const Mochila = (props) =>{
 return (
       <View style={styles.screen}>
         <Text style={styles.text}>Mochila</Text>
+        <Text style={styles.text}>Una mochila en donde se guardan tus ultimos recorridos, sitios cerca recomendados
+         y preguntas frecuentes.</Text>
       </View>
     );
 };
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
       fontFamily: "openSansSemibold",
       fontSize: 14,
       color: colors.TEXT,
+      textAlign: 'center'
     },
 });
 

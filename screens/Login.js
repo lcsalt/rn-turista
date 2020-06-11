@@ -22,10 +22,13 @@ const Login = (props) => {
   };
   
   const dispatch = useDispatch();
-  const handleLogin = () =>{
-      setIsLoggingIn(true);
-      dispatch(login({'email': email, 'password': password }));
-      //setIsLoggingIn(false);
+  const handleLogin = async () =>{
+      await setIsLoggingIn(true);
+      let success;
+      success = await dispatch(login({'email': email, 'password': password }));
+      if (!success) {
+        setIsLoggingIn(false);
+      }
   }
 
   return (

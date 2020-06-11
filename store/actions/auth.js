@@ -30,17 +30,22 @@ export const login = (loginInput) => {
       body: JSON.stringify(loginInput),
     })
       .then((res) =>{
-        if (res.status === 200) { 
+        if (res.status === 200) {
            const json = res.json()
            dispatch(setCredentials({ ...json }));
+           return true;
       } else if(res.status === 404){
         Alert.alert('Error al ingresar', 'Usuario no encontrado');
+        return false;
       } else if(res.status === 500){
         Alert.alert('Error al ingresar', 'Hubo un error, intenta nuevamente');
+        return false;
       } else if(res.status === 403){
         Alert.alert('Error al ingresar', 'Contraseña incorrecta');
+        return false;
       } else {
         console.log(res.status);
+        return false;
       }})
       //.then((json) => {
       //})
