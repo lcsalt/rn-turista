@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 
-
 import Boton from "../components/Boton.js";
 import LinkBoton from "../components/LinkBoton.js";
-import MarginTop from "../decorator_components/MarginTop.js";
+import MarginTop from "../components/decorator_components/MarginTop.js";
 import { colors, images } from "../constants";
 
 const UnloggedHome = (props) => {  
@@ -23,7 +22,7 @@ const UnloggedHome = (props) => {
 
 
       <View style={styles.containerBottom}>
-        <Boton text={"EMPEZAR"} onPress={() => {props.navigation.navigate('Singup')}} />
+        <Boton text={"EMPEZAR"} onPress={() => {props.navigation.navigate('SignupNavigation')}} />
         <MarginTop size={40}>
           <Text style={styles.textHome}>¿Ya tienes cuenta?</Text>
           <LinkBoton text={"Iniciar sesión"} onPress={() => {props.navigation.navigate('Login')}} />
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: "95%",
+    width: "90%",
     height: "54%",
   },
   logoText: {

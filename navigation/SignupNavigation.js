@@ -1,10 +1,11 @@
 import React from "react";
 import { Easing } from 'react-native';
-import { createStackNavigator, TransitionPresets, CardStyleInterpolators} from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 
-import UnloggedHome from '../screens/UnloggedHome.js';
-import Login from '../screens/Login.js';
-import SignupNavigation from './SignupNavigation.js';
+import Signup1 from '../screens/signup/Signup1.js';
+import Signup2 from '../screens/signup/Signup2.js';
+import Signup3 from '../screens/signup/Signup3.js';
+import SendValues from '../screens/signup/SendValues.js';
 
 const Stack = createStackNavigator();
 const config = {
@@ -26,9 +27,10 @@ const closeConfig = {
   }
 };
 
-function LoginRegisterNavigation() {
+function SignupNavigation() {
+
   return (
-    <Stack.Navigator  initialRouteName="UnloggedHome" 
+    <Stack.Navigator  initialRouteName="Signup1" 
                       screenOptions={{headerShown: false,
                                     gestureEnabled: true,
                                     gestureDirection: 'horizontal',
@@ -36,11 +38,13 @@ function LoginRegisterNavigation() {
                                     transitionSpec: {open: config, close: closeConfig,},
                                     }}
                       animation="fade">
-      <Stack.Screen  name="UnloggedHome" component={UnloggedHome} />
-      <Stack.Screen  name="Login" options={{gestureDirection: 'horizontal-inverted'}}component={Login} />
-      <Stack.Screen  name="SignupNavigation" component={SignupNavigation} />
-      </Stack.Navigator>
+      <Stack.Screen  name="Signup1" component={Signup1} />
+      <Stack.Screen  name="Signup2" component={Signup2} />
+      <Stack.Screen  name="Signup3" component={Signup3} />
+      <Stack.Screen  name="SendValues" component={SendValues} />
+      
+    </Stack.Navigator>
   );
 }
 
-export default LoginRegisterNavigation;
+export default SignupNavigation;

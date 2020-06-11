@@ -6,6 +6,7 @@ import preloadImages from './preloadImages';
 
 
 
+
 // cache images
 const cacheImages = images => {
   return Object.values(images).map(image => {
@@ -41,5 +42,5 @@ const loadAssetsAsync = async () => {
 
 export default {
   cacheImages,
-  loadAssetsAsync
+  loadAssetsAsync,
 };

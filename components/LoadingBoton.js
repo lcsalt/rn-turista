@@ -1,21 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
+import { TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
 import { colors } from "../constants";
 
 
-const Boton = (props) => {
+const LoadingBoton = (props) => {
     return (
-    <TouchableOpacity style={styles.buttonStyle} onPress={props.onPress}>
-      <Text style={styles.textStyle}>{props.text}</Text>
+    <TouchableOpacity style={styles.buttonStyle} >
+      <ActivityIndicator size="small" color={colors.WHITE} />
     </TouchableOpacity>
   );
 };
 
-Boton.propTypes = {
-  text: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired,
-};
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -34,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Boton;
+export default LoadingBoton;

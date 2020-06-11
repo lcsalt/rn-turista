@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
   
     buttonStyle: {
-      marginTop: 30,
+      marginTop: 50,
       marginLeft: 15,
       backgroundColor: 'transparent',
       paddingVertical: 15,
