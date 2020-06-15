@@ -31,9 +31,13 @@ export const login = (loginInput) => {
     })
       .then((res) =>{
         if (res.status === 200) {
-           const json = res.json()
-           dispatch(setCredentials({ ...json }));
-           return true;
+          res.json().then((response) =>{
+            const role = response.role;
+            const token = response.token;
+            dispatch(setCredentials({ role, token }));
+            return true;
+          })
+          
       } else if(res.status === 404){
         Alert.alert('Error al ingresar', 'Usuario no encontrado');
         return false;
