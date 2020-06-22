@@ -9,7 +9,7 @@ const LinkBoton = (props) => {
 
     return (
     <TouchableOpacity style={styles.buttonStyle} onPress={props.onPress}>
-      <Text style={styles.textStyle}>{props.text}</Text>
+      <Text style={{...styles.textStyle, ...props.textStyle}}>{props.text}</Text>
     </TouchableOpacity>
   );
 };
