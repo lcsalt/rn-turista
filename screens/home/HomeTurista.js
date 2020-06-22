@@ -11,7 +11,7 @@ import * as Location from "expo-location";
 
 import { colors } from "../../constants";
 
-const Home = (props) => {
+const HomeTurista = (props) => {
   const [
     isLocationPermissionGranted,
     setIsLocationPermissionGranted,
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default HomeTurista;

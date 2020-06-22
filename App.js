@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppLoading } from "expo";
 import { createStore, combineReducers, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -21,7 +21,6 @@ const authenticationStore = createStore(authenticationReducer, applyMiddleware(t
 
 export default function App() {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
-  
 
   if (!isLoadingComplete) {
     return (
