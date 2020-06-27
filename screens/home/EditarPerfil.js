@@ -3,7 +3,7 @@ import {  StyleSheet,  View,  Text,  ScrollView,  Dimensions,ActivityIndicator} 
 import { useSelector, useDispatch } from 'react-redux';
 import {Field, Form, Formik, FormikProps} from 'formik';
 import * as yup from 'yup';
-
+import { CommonActions } from "@react-navigation/native";
 import { colors } from "../../constants";
 import BackTextBoton from "../../components/BackTextBoton.js";
 import LoadingBoton from '../../components/LoadingBoton.js';
@@ -13,14 +13,14 @@ import Boton from '../../components/Boton.js';
 import SelectInput from "../../components/SelectInput.js";
 import ErrorMessage from "../../components/ErrorMessage.js";
 
-const EditarPerfil = (props) => {
-  //trae valores del reducer de registro
- // const [values, setvalues] = useState([]);
-    const userToken = useSelector(state => state.auth.token);
+const EditarPerfil = ({ route, navigation },props) => {
+
+  const userToken = useSelector(state => state.auth.token);
   const [sending, setSending] = useState(false);
-  let nombre ="";
-  let apellido="";
-  let fechaDeNacimiento="";
+  let nombre = route.params.nombre;
+  let apellido= route.params.apellido;
+  let fechaDeNacimiento= route.params.fechaDeNacimiento;
+  let celular = route.params.celular;
 
   function confirmarCambios(values){
     setSending(true);
@@ -39,24 +39,15 @@ const EditarPerfil = (props) => {
       console.log(response.status);
       if (response.status != 200){
         Alert.alert('Error', 'El registro no pudo realizarse.');
-        props.navigation.dispatch(CommonActions.reset({index: 1,routes: [{ name: "PerfilNavigation" }]}))
+        navigation.navigate('Perfil')
         return false;
     }else{
-        props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "PerfilNavigation" }]}))
+      navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "HomeNavigation" }]}))
         return true;
     }
     })
     };
     
-
- 
-  //return (
-    //<View>
-     // {props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Login" }]}))}
-   // </View>
- // );
-//};
-
   //validaciones de formulario
   const validationSchema = yup.object().shape({
     nombre: yup.string()
@@ -74,12 +65,19 @@ const EditarPerfil = (props) => {
       .ensure(),
     fechaDeNacimiento: yup.string()
       .required('Debe ingresar una fecha'),
-
+    celular: yup.string()
+      .label('celular')
+      .required('Ingrese su número')
+      .trim('Remueva los espacios')
+      .matches(/^\d+$/, 'Ingrese sólo números')
+      .min(7, 'Ingrese un número válido')
+      .max(15, 'Ingrese un número válido')
+      .ensure('Ingrese su número'),
   })
   
   if (sending) {
     return (
-      <View style={styles.screen}>
+      <View style={styles.loading}>
         <ActivityIndicator size="small" color={colors.PRIMARY} />
         <Text style={styles.text}>Confirmando registro...</Text>
       </View>
@@ -90,11 +88,11 @@ const EditarPerfil = (props) => {
       <BackTextBoton
         text="Editar Perfil"
         color={colors.PRIMARY}
-        onPress={() => props.navigation.goBack()}
+        onPress={() => navigation.goBack()}
       />
       
       <Formik
-        initialValues={{ nombre: nombre, apellido: apellido,
+        initialValues={{ nombre: nombre, apellido: apellido,celular:celular,
                         fechaDeNacimiento: fechaDeNacimiento, 
                         }}
         onSubmit={(values) => {
@@ -103,7 +101,7 @@ const EditarPerfil = (props) => {
                                 console.log(values)
                                 console.log(success)
                               if (success){
-                                props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Mapa" }]}))
+                                props.navigation.navigate('Perfil')
                               }
                             })
                           }}
@@ -125,15 +123,23 @@ const EditarPerfil = (props) => {
 
             <TxtInput
                 isPassword={false} error={false}
-                placeholder={'Apellido'}
+                placeholder={apellido}
                 value={values.apellido.trim()}
                 onChangeText={handleChange("apellido")}
                 onBlur={handleBlur("apellido")}
                 keyboardType={'default'}
             />
+            <TxtInput
+                isPassword={false} error={false}
+                placeholder={celular}
+                value={values.celular.trim()}
+                onChangeText={handleChange("celular")}
+                onBlur={handleBlur("celular")}
+                keyboardType={'numeric'}
+            />
             <ErrorMessage errorValue={touched.apellido && errors.apellido} />
 
-            <Field name="fechaDeNacimiento" placeholder='Fecha de Nacimiento' component={DatePicker} isPassword={false}/>
+            <Field name="fechaDeNacimiento" placeholder={`Fecha De Nacimiento: ${String(fechaDeNacimiento)}`} component={DatePicker} isPassword={false}/>
             
 
             <View style={styles.boton}>
@@ -154,6 +160,13 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.WHITE,
+
+  },
+  loading: {
+    flex: 1,
+    backgroundColor: colors.WHITE,
+    alignItems: "center",
+    justifyContent: "center",
   },
   form: {
     marginVertical: Dimensions.get('window').height * 5 / 100,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions,TouchableOpacity} from "react-native";
+import { StyleSheet, View, Text, Dimensions,TouchableOpacity, ActivityIndicator} from "react-native";
 import { useDispatch, useSelector} from 'react-redux';
 import chalk from 'chalk'
 
@@ -7,24 +7,31 @@ import { setLogout } from '../../store/actions/auth';
 import { colors } from "../../constants";
 import Boton from "../../components/Boton";
 import TextoRecuadrado from "../../components/TextoRecuadrado";
+import { set } from "react-native-reanimated";
 
   
 
-const Perfil = (props) =>{
+const Perfil = ({ navigation },props) =>{
   const userToken = useSelector(state => state.auth.token);
-  const role = useSelector((state) => state.auth.role);
+
   const [apellido, setApellido] = useState(" ");
   const [nombre, setNombre] = useState(" ");
-  const [edad, setEdad] = useState(" ");
+  const [fechaDeNacimiento, setFechaDeNacimiento] = useState(" ");
   const [email, setEmail] = useState(" ");
-  const [telefono, setTelefono] = useState(" ");
+  const [celular, setCelular] = useState(" ");
   const [password, setPassword] = useState(" ");
+  const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
 
   const handleLogout = () =>{
     dispatch( setLogout() );
   }
-
+  function handleEdit(){
+    navigation.navigate('EditarPerfil', {
+      apellido,nombre,fechaDeNacimiento,celular
+    });
+    setLoading(true)
+  }
 
 function getValues(){
       const myHeaders = new Headers({
@@ -38,12 +45,14 @@ function getValues(){
         .then((res) =>{
           if (res.status === 200) {
             let data = res.json().then(data => {
+              setLoading(false);
               setApellido(data.user.apellido);
               setNombre(data.user.nombre)
-              setEdad((data.user.fechaDeNacimiento).split("T", 1));
+              setFechaDeNacimiento((data.user.fechaDeNacimiento).split("T", 1));
               setEmail(data.user.email)
-              setTelefono(data.user.celular)
+              setCelular(data.user.celular)
               setPassword(data.user.password) 
+              console.log(data)
               return true;             
             });
            
@@ -57,8 +66,16 @@ function getValues(){
         }})
       return success;
   }
+  
+if(loading){
+  {getValues()}
+  return(
+  <View style={styles.screen}>
+        <ActivityIndicator size="small" color={colors.PRIMARY} />
+        <Text style={styles.text}>cargando registro...</Text>
+      </View>
+)}
 
-  getValues();
 
 return (
       <View style={styles.screen}>
@@ -68,11 +85,11 @@ return (
         <Text style={styles.text}>Correo Electrónico </Text>
         <Text style={styles.textInfo}>{email}</Text>
         <Text style={styles.text}>Número de Telefóno </Text>
-        <Text style={styles.textInfo}>{telefono} </Text>
+        <Text style={styles.textInfo}>{celular} </Text>
         <Text style={styles.text}>Fecha de Nacimiento </Text>
-        <Text style={styles.textInfo}>{edad} </Text>
+        <Text style={styles.textInfo}>{fechaDeNacimiento} </Text>
         <Text style={styles.text}> </Text>
-        <Boton text={"Editar Perfil"} onPress={() => {props.navigation.navigate('EditarPerfil')}}  />
+        <Boton text={"Editar Perfil"} onPress={()=> handleEdit() }  />
         <View  style={{position: "absolute", top: '94.5%', left: '48%', marginHorizontal: 50}}>
             <TouchableOpacity onPress={handleLogout}
                               style={styles.horizontalButton}><Text style={styles.buttonText}>Cerrar Sesión</Text></TouchableOpacity>
