@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions,TouchableOpacity, ActivityIndicator} from "react-native";
+import { StyleSheet, View, Text, Dimensions, ImageBackground ,TouchableOpacity, ActivityIndicator} from "react-native";
 import { useDispatch, useSelector} from 'react-redux';
 import chalk from 'chalk'
 
 import { setLogout } from '../../store/actions/auth';
-import { colors } from "../../constants";
+import { colors, images} from "../../constants";
 import Boton from "../../components/Boton";
 import TextoRecuadrado from "../../components/TextoRecuadrado";
 import { set } from "react-native-reanimated";
@@ -13,13 +13,13 @@ import { set } from "react-native-reanimated";
 
 const Perfil = ({ navigation },props) =>{
   const userToken = useSelector(state => state.auth.token);
-
+  const role = useSelector(state => state.auth.role);
   const [apellido, setApellido] = useState(" ");
   const [nombre, setNombre] = useState(" ");
   const [fechaDeNacimiento, setFechaDeNacimiento] = useState(" ");
   const [email, setEmail] = useState(" ");
   const [celular, setCelular] = useState(" ");
-  const [password, setPassword] = useState(" ");
+  const [genero, setGenero] = useState(" ");
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch();
 
@@ -28,7 +28,7 @@ const Perfil = ({ navigation },props) =>{
   }
   function handleEdit(){
     navigation.navigate('EditarPerfil', {
-      apellido,nombre,fechaDeNacimiento,celular
+      apellido,nombre,fechaDeNacimiento,celular, genero, email
     });
     setLoading(true)
   }
@@ -51,7 +51,8 @@ function getValues(){
               setFechaDeNacimiento((data.user.fechaDeNacimiento).split("T", 1));
               setEmail(data.user.email)
               setCelular(data.user.celular)
-              setPassword(data.user.password) 
+              setGenero(data.user.genero) 
+              
               console.log(data)
               return true;             
             });
@@ -79,6 +80,8 @@ if(loading){
 
 return (
       <View style={styles.screen}>
+        <ImageBackground source={images.backgroundImg}  style={{width: '100%', height: '100%'}}>
+        <View style={styles.perfil}>
         <TextoRecuadrado text={role}/>
         <Text style={styles.nombre}>{apellido} {nombre}</Text>
         <Text style={styles.row}>                                         </Text>
@@ -86,14 +89,19 @@ return (
         <Text style={styles.textInfo}>{email}</Text>
         <Text style={styles.text}>Número de Telefóno </Text>
         <Text style={styles.textInfo}>{celular} </Text>
+        <Text style={styles.text}>Género </Text>
+        <Text style={styles.textInfo}>{genero} </Text>
         <Text style={styles.text}>Fecha de Nacimiento </Text>
         <Text style={styles.textInfo}>{fechaDeNacimiento} </Text>
+        <Text style={styles.row}>                                         </Text>
         <Text style={styles.text}> </Text>
+        
         <Boton text={"Editar Perfil"} onPress={()=> handleEdit() }  />
-        <View  style={{position: "absolute", top: '94.5%', left: '48%', marginHorizontal: 50}}>
-            <TouchableOpacity onPress={handleLogout}
-                              style={styles.horizontalButton}><Text style={styles.buttonText}>Cerrar Sesión</Text></TouchableOpacity>
-          </View>
+        <TouchableOpacity onPress={handleLogout} style={styles.horizontalButton}>
+          <Text style={styles.buttonText}>Cerrar Sesión</Text>
+        </TouchableOpacity>
+        </View>
+        </ImageBackground>
       </View>
     );
 };
@@ -134,11 +142,22 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       alignSelf: 'center',
+      marginTop: 10,
       shadowColor: colors.ERROR, 
       shadowOffset: { height: 1, width: 1 }, 
       shadowOpacity: 1, 
       shadowRadius: 1, 
       elevation: 2, 
+    },
+    perfil: {
+      alignSelf: 'center',
+      marginVertical: Dimensions.get('window').height * 7 / 100,
+      height: Dimensions.get('window').height * 85 / 100,
+      width: Dimensions.get('window').width * 90 / 100,
+      backgroundColor: colors.WHITE_DARK,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
 
 });

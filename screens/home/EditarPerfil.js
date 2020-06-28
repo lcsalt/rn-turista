@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  StyleSheet,  View,  Text,  ScrollView,  Dimensions,ActivityIndicator} from "react-native";
+import {  StyleSheet,  View,  Text,  ScrollView,Alert,  Dimensions,ActivityIndicator} from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import {Field, Form, Formik, FormikProps} from 'formik';
 import * as yup from 'yup';
@@ -21,6 +21,9 @@ const EditarPerfil = ({ route, navigation },props) => {
   let apellido= route.params.apellido;
   let fechaDeNacimiento= route.params.fechaDeNacimiento;
   let celular = route.params.celular;
+  let genero = route.params.genero;
+  let email = route.params.email;
+  const opcionesGenero = ['Género','Masculino', 'Femenino', 'Otro', 'Prefiero no decirlo']
 
   function confirmarCambios(values){
     setSending(true);
@@ -38,10 +41,11 @@ const EditarPerfil = ({ route, navigation },props) => {
         setSending(false);
       console.log(response.status);
       if (response.status != 200){
-        Alert.alert('Error', 'El registro no pudo realizarse.');
+        Alert.alert('Error', 'Hubo un error, intenta nuevamente. Si el error persiste, posiblemente el E-mail este ocupado por otro usuario');
         navigation.navigate('Perfil')
         return false;
     }else{
+
       navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "HomeNavigation" }]}))
         return true;
     }
@@ -63,6 +67,12 @@ const EditarPerfil = ({ route, navigation },props) => {
       .min(2, 'Debe ingresar su apellido')
       .lowercase()
       .ensure(),
+      email: yup.string()
+      .label('E-mail')
+      .required('Debe ingresar su E-mail')
+      .lowercase()
+      .email('Ingrese una dirección válida')
+      .ensure('Debe ingresar su E-mail'),
     fechaDeNacimiento: yup.string()
       .required('Debe ingresar una fecha'),
     celular: yup.string()
@@ -73,6 +83,10 @@ const EditarPerfil = ({ route, navigation },props) => {
       .min(7, 'Ingrese un número válido')
       .max(15, 'Ingrese un número válido')
       .ensure('Ingrese su número'),
+      genero: yup.string()
+      .matches(/(Masculino|Femenino|Otro|Prefiero no decirlo)/,'Elija una opción' )
+      .ensure()
+      .required('Elija una opción')
   })
   
   if (sending) {
@@ -92,7 +106,7 @@ const EditarPerfil = ({ route, navigation },props) => {
       />
       
       <Formik
-        initialValues={{ nombre: nombre, apellido: apellido,celular:celular,
+        initialValues={{ nombre: nombre, apellido: apellido, email:email, celular:celular, genero:genero,
                         fechaDeNacimiento: fechaDeNacimiento, 
                         }}
         onSubmit={(values) => {
@@ -131,6 +145,16 @@ const EditarPerfil = ({ route, navigation },props) => {
             />
             <TxtInput
                 isPassword={false} error={false}
+                placeholder={email}
+                value={values.email}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")} 
+                keyboardType={'email-address'}
+                autoCapitalize={'none'} 
+            />
+             <ErrorMessage errorValue={touched.email && errors.email} />
+            <TxtInput
+                isPassword={false} error={false}
                 placeholder={celular}
                 value={values.celular.trim()}
                 onChangeText={handleChange("celular")}
@@ -138,6 +162,9 @@ const EditarPerfil = ({ route, navigation },props) => {
                 keyboardType={'numeric'}
             />
             <ErrorMessage errorValue={touched.apellido && errors.apellido} />
+
+            <Field name='genero' placeholder={genero} component={SelectInput} options={opcionesGenero}/>
+            <ErrorMessage errorValue={touched.genero && errors.genero} />
 
             <Field name="fechaDeNacimiento" placeholder={`Fecha De Nacimiento: ${String(fechaDeNacimiento)}`} component={DatePicker} isPassword={false}/>
             
