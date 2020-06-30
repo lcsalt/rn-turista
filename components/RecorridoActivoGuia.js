@@ -22,6 +22,7 @@ const RecorridoActivoGuia = (props) => {
   const dispatch = useDispatch();
   const handleCancelarRecorrido = () => {
     dispatch(cancelarRecorrido(userToken, recorridoId))
+    props.returnToMainMap();
   };
 
 
