@@ -12,7 +12,7 @@ import registerReducer from './store/reducers/register.js';
 import authReducer from './store/reducers/auth.js';
 import recorridoActivoReducer from './store/reducers/recorridoActivo.js';
 
-// este Store es usado cuando no esta loggeado
+// Store
 const authenticationReducer = combineReducers({
   register: registerReducer,
   auth: authReducer,
