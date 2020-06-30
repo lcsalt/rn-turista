@@ -1,4 +1,4 @@
-import colors from './colors';
+import colors from './Colors';
 import functions from './functions';
 import images from './preloadImages';
 
