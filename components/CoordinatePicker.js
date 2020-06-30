@@ -26,11 +26,15 @@ const CoordinatePicker = ({ field, form, ...props }) => {
   const inputStyles = [styles.border, styles.shadow];
   
   useEffect(() => {
+    let unmounted = false;
     (async () => {
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      if(!unmounted){
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      }
     })();
-  });
+    return () => { unmounted = true };
+}, []);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
