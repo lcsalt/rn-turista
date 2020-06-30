@@ -24,7 +24,7 @@ const opcionesIdioma = ['Español','Inglés', 'Portugués', 'Chino', 'Francés']
 const userToken = useSelector(state => state.auth.token);
 
 setValues = (values) =>{
-  console.log(values);
+ 
     setIsSubmitting(true);
     const myHeaders = new Headers({
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ return (
 
 
      <Formik
-        initialValues={{ idioma: '', duracionMinutos: '', maxParticipantes: '', puntoInicio: {}, recorrido: [] }}
+        initialValues={{ nombreRecorrido: '', idioma: '', duracionMinutos: '', maxParticipantes: '', puntoInicio: {}, recorrido: [] }}
         onSubmit={(values) => {
                               setValues(values)
                               .then(success =>{
@@ -77,6 +77,15 @@ return (
            
            <Field name='puntoInicio' placeholder='Punto de Inicio' component={CoordinatePicker} />
            <Field name='recorrido' placeholder='Recorrido' component={MultiCoordinatePicker} />
+
+           <TxtInput
+                isPassword={false} error={false}
+                placeholder={'Asígnale un nombre a tu recorrido'}
+                value={values.nombreRecorrido}
+                onChangeText={handleChange("nombreRecorrido")}
+                onBlur={handleBlur("nombreRecorrido")}
+                keyboardType={'default'}
+            />
 
             <TxtInput
                 isPassword={false} error={false}

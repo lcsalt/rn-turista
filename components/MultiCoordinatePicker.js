@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {  View,  StyleSheet,  Button,  Text,  Dimensions,  TouchableOpacity,  TextInput,  Image,  ActivityIndicator} from "react-native";
 import Modal from "react-native-modal";
 import * as Location from "expo-location";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout, Polyline } from "react-native-maps";
 
 import LinkBoton from "./LinkBoton.js";
 import { colors, images } from "../constants";
@@ -11,16 +11,19 @@ const MultiCoordinatePicker = ({ field, form, ...props }) => {
   
   const [isModalVisible, setModalVisible] = useState(false);
   const [markers, setMarkers] = useState([{index: -1, coordinates: {"latitude": 0, "longitude": 0}},]);
+  const [allCoordinates, setAllCoordinates] = useState([{latitude: 0, longitude: 0}]);
   const [location, setLocation] = useState(null);
 
-
   useEffect(() => {
+    let unmounted = false;
     (async () => {
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      if(!unmounted){
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      }
     })();
-  });
-
+    return () => { unmounted = true };
+  }, []);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -36,10 +39,12 @@ const MultiCoordinatePicker = ({ field, form, ...props }) => {
         const position = 0;
         const newMarker = {index: position, coordinates: coordinates};
         setMarkers([newMarker]);
+        setAllCoordinates([coordinates]);
     }else {
         const position = markers.length;
         const newMarker = {index: position, coordinates: coordinates};
         setMarkers([...markers, newMarker]);
+        setAllCoordinates([...allCoordinates, coordinates]);
     }  
   }    
     
@@ -47,8 +52,10 @@ const MultiCoordinatePicker = ({ field, form, ...props }) => {
 
   const moveMarker = (index, coordinates) =>{
      const removedMarkerList = markers.filter(marker => marker.index != index);
+     const newCoordinateList = allCoordinates.splice(index,1,coordinates);
      const newMarker = {index: index, coordinates: coordinates};
      setMarkers([...removedMarkerList, newMarker])
+     setAllCoordinates([...newCoordinateList]);
 }
   
 
@@ -91,6 +98,7 @@ const MultiCoordinatePicker = ({ field, form, ...props }) => {
                     markers.map((marker) => {
                         return (<Marker draggable
                                      key={marker.index}
+                                     image={images.mapPoint}
                                      coordinate={marker.coordinates}
                                      title={(marker.index).toString(10)}
                                      onDragEnd={(e) => moveMarker(marker.index, e.nativeEvent.coordinate)}
@@ -98,6 +106,11 @@ const MultiCoordinatePicker = ({ field, form, ...props }) => {
                         );
                     })
                 }
+                <Polyline
+                  coordinates={allCoordinates}
+                  strokeColor={colors.PRIMARY}
+                  strokeWidth={4}
+                />
 
 
               </MapView>
