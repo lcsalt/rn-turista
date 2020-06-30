@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import MapView, {PROVIDER_GOOGLE ,Marker, Callout} from "react-native-maps";
-import {  StyleSheet,  View,  Text,  Dimensions,  ActivityIndicator,  Alert,  TouchableOpacity} from "react-native";
+import {  StyleSheet,  View,  Text,  Dimensions,  ActivityIndicator,  Alert,  TouchableOpacity, Image} from "react-native";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 
 import Boton from "../../components/Boton.js";
-import GuideMarker from "../../components/GuideMarker.js"
-import { colors } from "../../constants";
+import GuideMarker from "../../components/GuideMarker.js";
+import RecorridoActivoGuia from "../../components/RecorridoActivoGuia.js"
+import { colors, images } from "../../constants";
 
 const io = require('socket.io-client');
 const socket = io('https://sheltered-bastion-34059.herokuapp.com/');
@@ -20,11 +21,13 @@ const HomeGuia = (props) => {
   const [fueEnviadoRecorrido, setFueEnviadoRecorrido] = useState(false);
   const [recorridoDetalle, setRecorridoDetalle] = useState(null); //al clickear en el icono de un guía, se busca el recorrido y se guarda acá
   
+  
   const userToken = useSelector((state) => state.auth.token);
   const estadoRecorrido = useSelector((state) => state.recorridoActivo.estado);
   const recorrido = useSelector((state) => state.recorridoActivo.recorrido);
   const recorridoActivoId = useSelector((state) => state.recorridoActivo.recorridoId);
-
+  const horarioComienzoRecorrido = useSelector((state)=> state.recorridoActivo.horarioComienzo);
+  
   
 
   /////PERMISOS Y CURRENT POSITION 
@@ -153,11 +156,11 @@ const HomeGuia = (props) => {
           </MapView>
           {(estadoRecorrido == 'Por empezar') ? 
           (
-
-            null
-
+            <View>
+              <RecorridoActivoGuia nombreRecorrido={recorrido.nombre} maxParticipantes={recorrido.maxParticipantes} horarioComienzo={horarioComienzoRecorrido}/>              
+            </View>
           ):(
-          <View style={{position: "absolute", marginHorizontal: 50,  bottom: Dimensions.get("window").height * 1/100, left: '48%',}}>
+            <View style={{position: "absolute", marginHorizontal: 50,  bottom: Dimensions.get("window").height * 1/100, left: '48%',}}>
             <View  style={{}}>
               <TouchableOpacity onPress={() => {props.navigation.navigate('IniciarRecorrido')}}
                                 style={{...styles.horizontalButton,  backgroundColor: colors.WHITE,}}><Text style={{...styles.buttonText, color: colors.PRIMARY,}}>¡Iniciar recorrido!</Text></TouchableOpacity>
@@ -168,8 +171,7 @@ const HomeGuia = (props) => {
             </View>
           </View>
           )}
-             
-        </View>
+         </View>
       ) : (
         //Pantalla de carga
         <View>
@@ -228,6 +230,56 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, 
     shadowRadius: 1, 
     elevation: 2, 
+  },
+  recorridoPorEmpezar: {
+    alignSelf: 'center',
+    position: "absolute",
+    bottom: Dimensions.get("window").height * 2/100,
+    height: Dimensions.get('window').height * 20 / 100,
+    width: Dimensions.get('window').width * 85 / 100,
+    backgroundColor: colors.WHITE,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: 'rgba(0,0,0, .4)', 
+    shadowOffset: { height: 1, width: 1 }, 
+    shadowOpacity: 1, 
+    shadowRadius: 1, 
+    elevation: 2, 
+  },
+  horarioComienzoBox: {
+    alignSelf: 'center',
+    position: "absolute",
+    bottom: Dimensions.get("window").height * 23/100,
+    height: Dimensions.get('window').height * 8 / 100,
+    width: Dimensions.get('window').width * 35 / 100,
+    backgroundColor: colors.WHITE,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    left:' 58%',
+    shadowColor: 'rgba(0,0,0, .4)', 
+    shadowOffset: { height: 1, width: 1 }, 
+    shadowOpacity: 1, 
+    shadowRadius: 1, 
+    elevation: 2, 
+    
+  },
+  cancelarRecorridoBox: {
+    alignSelf: 'center',
+    position: "absolute",
+    bottom: Dimensions.get("window").height * 23/100,
+    height: Dimensions.get('window').height * 8 / 100,
+    width: Dimensions.get('window').width * 55 / 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: Dimensions.get('window').width * 44/ 100,
+    shadowColor: 'rgba(0,0,0, .4)', 
+    shadowOffset: { height: 1, width: 1 }, 
+    shadowOpacity: 1, 
+    shadowRadius: 1, 
+    elevation: 2, 
+    
   },
 });
 
