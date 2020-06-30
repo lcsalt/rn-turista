@@ -88,7 +88,7 @@ const IniciarRecorrido = (props) => {
       setIsSubmitting(false);
     }
     const recorridoActivoValues = {
-      recorrido: recorridoSelected,
+      recorrido: recorridoSelected[0],
       horarioComienzo: horarioComienzoParsed,
     };
     let success;
