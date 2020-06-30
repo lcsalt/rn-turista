@@ -10,6 +10,6 @@ export default {
     TEXT_DARK:'#525F7F',
     ERROR: '#F5365C',
     GUIDE: '#FC603A',
-    TURIST: '#EB4E70'
+    TURIST: '#EB9E80'
 
 }
