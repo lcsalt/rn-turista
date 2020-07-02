@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions, ImageBackground ,TouchableOpacity, ActivityIndicator} from "react-native";
+import { StyleSheet, View, Text,Image, Dimensions, ImageBackground ,TouchableOpacity, ActivityIndicator} from "react-native";
 import { useDispatch, useSelector} from 'react-redux';
 import chalk from 'chalk'
 
@@ -20,9 +20,9 @@ const Perfil = ({ navigation },props) =>{
   const [email, setEmail] = useState(" ");
   const [celular, setCelular] = useState(" ");
   const [genero, setGenero] = useState(" ");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [foto, setFoto] = useState("");
   const dispatch = useDispatch();
-
   const handleLogout = () =>{
     dispatch( setLogout() );
   }
@@ -52,11 +52,21 @@ function getValues(){
               setEmail(data.user.email)
               setCelular(data.user.celular)
               setGenero(data.user.genero) 
-              
               console.log(data)
-              return true;             
-            });
-           
+              if(data.user.role === "Guía"){
+                if(data.user.genero === "Masculino"){
+                  setFoto(images.iconGuiaHombre)
+                } else if(data.user.genero === "Femenino"){
+                  setFoto(images.iconGuiaMujer)
+                }else{
+                  setFoto(images.iconGuiaGenerico)
+                }
+              } else{
+                setFoto(images.iconoTuristas)
+              }
+              return true;
+            });       
+
         } else if(res.status === 500){
           Alert.alert('Error', 'Hubo un error, intenta nuevamente');
           console.log(chalk.green(res.status))
@@ -67,7 +77,8 @@ function getValues(){
         }})
       return success;
   }
-  
+
+    
 if(loading){
   {getValues()}
   return(
@@ -82,7 +93,13 @@ return (
       <View style={styles.screen}>
         <ImageBackground source={images.backgroundImg}  style={{width: '100%', height: '100%'}}>
         <View style={styles.perfil}>
+        <Image
+          source = {foto}
+          style={styles.image}
+          resizeMode="contain"
+        ></Image>
         <TextoRecuadrado text={role}/>
+
         <Text style={styles.nombre}>{apellido} {nombre}</Text>
         <Text style={styles.row}>                                         </Text>
         <Text style={styles.text}>Correo Electrónico </Text>
@@ -119,6 +136,15 @@ const styles = StyleSheet.create({
       fontSize: 12,
       marginTop: 10,
       color: colors.TEXT_LIGHT,
+    }, 
+    containerTop: {
+      marginTop: Dimensions.get('window').height * 10 / 100,
+      paddingHorizontal: Dimensions.get('window').width * 9 / 100,
+      alignItems: "center",
+    },
+    image: {
+      width: "90%",
+      height: "54%",
     },
     textInfo: {
       fontFamily: "openSansSemibold",
@@ -133,6 +159,10 @@ const styles = StyleSheet.create({
     row: {
       borderBottomColor: colors.text,
       borderBottomWidth: StyleSheet.hairlineWidth
+    },
+    image: {
+      width: "50%",
+      height: "24%",
     },
     horizontalButton: {
       width: 125,
