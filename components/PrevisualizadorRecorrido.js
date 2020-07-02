@@ -6,10 +6,9 @@ import { cancelarRecorrido } from '../store/actions/recorridoActivo';
 import Boton from "./Boton.js"
 import { colors, images } from "../constants";
 
-const RecorridoActivoGuia = (props) => {
+const PrevisualizadorRecorrido = (props) => {
   const horarioComienzo = props.horarioComienzo;
   const userToken = useSelector((state) => state.auth.token);
-  const recorridoId = useSelector((state) => state.recorridoActivo.recorridoId);
 
   let minutos;
   if (horarioComienzo.getMinutes() < 10){
@@ -21,10 +20,8 @@ const RecorridoActivoGuia = (props) => {
   
   const dispatch = useDispatch();
   const handleCancelarRecorrido = () => {
-    console.log('//handle cancel 1 // handlecancelarRecorridoBoton')
     dispatch(cancelarRecorrido(userToken, recorridoId))
-    .then((res)=>  props.cancelarRecorrido())
-    
+    props.returnToMainMap();
   };
 
 
@@ -111,4 +108,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default RecorridoActivoGuia;
+export default PrevisualizadorRecorrido;

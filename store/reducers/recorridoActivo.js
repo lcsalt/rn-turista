@@ -21,12 +21,7 @@ const recorridoActivoReducer = (state = initialState, action) => {
                 estado: action.estado,
             }
         case SET_FINALIZAR:
-            return {...state,
-                estado: action.estado,
-                recorrido: action.recorrido,
-                recorridoId: action.recorridoId,
-                horarioComienzo: action.horarioComienzo,
-            }
+            return initialState;
         default:
             return state;
     }

@@ -10,11 +10,7 @@ export const SET_INICIAR = 'SET_INICIAR';
 export const setFinalizar = () => {
   console.log('2 ///', 'recorrido finalizado');
     return {
-        type: SET_FINALIZAR,
-        estado: '',
-        recorrido: '',
-        recorridoId: '',
-        horarioComienzo: '',
+        type: SET_FINALIZAR
     };
 };
 
@@ -127,7 +123,7 @@ export const finalizarRecorrido = (userToken, recorridoId) => {
         })
           .then((res) =>{
             if (res.status === 200) {
-                dispatch(setFinalizar());
+              dispatch(setFinalizar());
                 return true;
           } else if(res.status === 500){
             Alert.alert('Error', 'Hubo un error al finalizar el recorrido, intente nuevamente.');
@@ -158,7 +154,7 @@ export const cancelarRecorrido = (userToken, recorridoId) => {
       })
         .then((res) =>{
           if (res.status === 200) {
-            console.log('1 ///', 'recorrido eliminado');
+            console.log('//handle cancel 2 // Store recorridoActivo cancelarRecorrido')
               dispatch(setFinalizar());
               return true;
         } else if(res.status === 500){

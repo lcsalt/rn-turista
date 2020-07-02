@@ -1,15 +1,18 @@
 import React from "react";
 import { View, Image,TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
-import { useDispatch, useSelector } from 'react-redux';
 
-import { cancelarRecorrido } from '../store/actions/recorridoActivo';
+
 import Boton from "./Boton.js"
+import LinkBoton from "./LinkBoton.js"
+
 import { colors, images } from "../constants";
 
-const RecorridoActivoGuia = (props) => {
+const DetalleRecorrido = (props) => {
   const horarioComienzo = props.horarioComienzo;
-  const userToken = useSelector((state) => state.auth.token);
-  const recorridoId = useSelector((state) => state.recorridoActivo.recorridoId);
+  const duracion = props.duracion;
+  const nombreRecorrido = props.nombreRecorrido;
+  const idioma = props.idioma;
+  const maxParticipantes = props.maxParticipantes;
 
   let minutos;
   if (horarioComienzo.getMinutes() < 10){
@@ -19,34 +22,35 @@ const RecorridoActivoGuia = (props) => {
   }  
 
   
-  const dispatch = useDispatch();
-  const handleCancelarRecorrido = () => {
-    console.log('//handle cancel 1 // handlecancelarRecorridoBoton')
-    dispatch(cancelarRecorrido(userToken, recorridoId))
-    .then((res)=>  props.cancelarRecorrido())
-    
+  const handleCancelar = () => {
+    props.cancelar();
   };
 
 
     return (
         <View>
             <View style={styles.recorridoPorEmpezar}>
-    <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{props.nombreRecorrido}</Text>
+                <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{nombreRecorrido}</Text>
+                
                 <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                    <Image
-                        source={images.crowd}
-                        style={{ width: "25%" }}
-                    ></Image>
-                    <Text style={{ ...styles.text, marginLeft: 10, }}>0/{props.maxParticipantes} Turistas Inscriptos</Text>
+                    <Text style={{ ...styles.text,}}>{idioma}</Text>
                 </View>
+                <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                    <Text style={{ ...styles.text, marginLeft: 10, }}>0/{maxParticipantes} Turistas Inscriptos</Text>
+                </View>
+                <LinkBoton text={'¡Unirse!'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.PRIMARY }} onPress={() => {}} />
 
             </View>
             <View style={styles.horarioComienzoBox}>
                 <Text style={{ ...styles.text, fontSize: 12, }}>Horario comienzo</Text>
                 <Text style={{ fontFamily: "openSansBold", fontSize: 16, marginTop: 1, color: colors.TEXT_DARK, }}>{horarioComienzo.getHours()}:{minutos} hs</Text>
             </View>
+            <View style={{...styles.horarioComienzoBox, bottom: Dimensions.get("window").height * 32/100,}}>
+                <Text style={{ ...styles.text, fontSize: 12, }}>Duración</Text>
+                <Text style={{ fontFamily: "openSansBold", fontSize: 16, marginTop: 1, color: colors.TEXT_DARK, }}>{duracion} min.</Text>
+            </View>
             <View style={styles.cancelarRecorridoBox}>
-                <Boton text={'Cancelar Recorrido'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.ERROR }} onPress={handleCancelarRecorrido} />
+                <Boton text={'Cancelar'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.ERROR }} onPress={handleCancelar} />
             </View>
         </View>
     );
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 55 / 100,
         alignItems: 'center',
         justifyContent: 'center',
-        right: Dimensions.get('window').width * 44/ 100,
+        right: Dimensions.get('window').width * 54/ 100,
         shadowColor: 'rgba(0,0,0, .4)', 
         shadowOffset: { height: 1, width: 1 }, 
         shadowOpacity: 1, 
@@ -111,4 +115,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default RecorridoActivoGuia;
+export default DetalleRecorrido;

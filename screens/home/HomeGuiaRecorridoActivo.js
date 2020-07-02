@@ -12,14 +12,15 @@ import RecorridoActivoGuia from "../../components/RecorridoActivoGuia.js"
 import { colors, images } from "../../constants";
 
 const io = require('socket.io-client');
+
 const socket = io('https://sheltered-bastion-34059.herokuapp.com/');
 
+        
 const HomeGuiaRecorridoActivo = (props) => {
     const [isLocationPermissionGranted, setIsLocationPermissionGranted,] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [location, setLocation] = useState(null);
     const [fueEnviadoRecorrido, setFueEnviadoRecorrido] = useState(false);
-    const [recorridoDetalle, setRecorridoDetalle] = useState(null); //al clickear en el icono de un guía, se busca el recorrido y se guarda acá
     const [recorridoActivoCoords, setRecorridoActivoCoords] = useState([{ latitude: 0, longitude: 0 }]);
     const [puntoDeInicio, setPuntoDeInicio] = useState({ latitude: 0, longitude: 0 });
     const [recorridoActivo, setRecorridoActivo] = useState([{index: '', coordinates: { latitude: 0, longitude: 0 }}]);
@@ -32,11 +33,22 @@ const HomeGuiaRecorridoActivo = (props) => {
 
     const returnToMainMap = () => {
         props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Mapa" }]}));
+        console.log('//handle cancel 4 // return mapa')
+    }
+
+    const cancelarRecorrido = () =>{
+        const data = {
+            key: recorridoActivoId.toString(),
+        }
+        
+        console.log('//handle cancel 3 // cancelarRecorrido socket')
+        socket.emit('cancelarRecorrido', data);
     }
 
     /////PERMISOS Y CURRENT POSITION 
     useEffect(() => {
         let unmounted = false;
+
         console.log(estadoRecorrido);
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
@@ -50,7 +62,6 @@ const HomeGuiaRecorridoActivo = (props) => {
                 if (estadoRecorrido == 'Por empezar') {
                     //guardo en el estado el array de puntos del recorrido
                     const recorridoPoints = recorrido.recorrido;
-                    console.log('1 //// ', recorridoPoints)
                     const recorridoCoordinates = recorridoPoints.map((punto) => {
                         return punto.coordinates;
                     })
@@ -59,7 +70,7 @@ const HomeGuiaRecorridoActivo = (props) => {
                     setRecorridoActivo(recorrido.recorrido);
                     /////
                     if (!fueEnviadoRecorrido) { //1ra vez enviar todo y guardarlo en node en un array, crear la sala, y unirse
-                        console.log('enviando ubicacion: ', location)
+                        console.log('enviando ubicacion 1: ', location)
                         socket.emit('shareRecorridoActivo', ({
                             recorrido: recorrido,
                             coordinates: { latitude: location.coords.latitude, longitude: location.coords.longitude },
@@ -68,7 +79,7 @@ const HomeGuiaRecorridoActivo = (props) => {
                         );
                         setFueEnviadoRecorrido(true);
                     } else { //después solo envía la unicacion linkeada a una key para asociarla al recorrido y el room creado
-                        console.log('enviando ubicacion: ', location)
+                        console.log('enviando ubicacion denuevo: ', location)
                         socket.emit('shareGuideLocation', ({ coordinates: { latitude: location.coords.latitude, longitude: location.coords.longitude }, key: recorridoActivoId.toString() }));
                     }
                 }
@@ -134,7 +145,7 @@ const HomeGuiaRecorridoActivo = (props) => {
                     <RecorridoActivoGuia nombreRecorrido={recorrido.nombre}
                                          maxParticipantes={recorrido.maxParticipantes}
                                          horarioComienzo={horarioComienzoRecorrido} 
-                                         returnToMainMap={returnToMainMap}
+                                         cancelarRecorrido={()=>{returnToMainMap(); cancelarRecorrido();}}
                     />
                 </View>
             ) : (
