@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  StyleSheet,  View,  Text,  ScrollView,Alert,  Dimensions,ActivityIndicator} from "react-native";
+import {  StyleSheet,  View,  Text,  ScrollView, Alert, Dimensions,ActivityIndicator} from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import {Field, Form, Formik, FormikProps} from 'formik';
 import * as yup from 'yup';
