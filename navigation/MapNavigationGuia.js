@@ -3,6 +3,7 @@ import { Easing } from 'react-native';
 import { createStackNavigator, TransitionPresets, CardStyleInterpolators} from '@react-navigation/stack';
 
 import HomeGuia from '../screens/home/HomeGuia.js';
+import RecorridoActivo from '../screens/home/HomeGuiaRecorridoActivo.js';
 import CrearRecorrido from '../screens/home/CrearRecorrido.js';
 import IniciarRecorrido from '../screens/home/IniciarRecorrido.js';
 
@@ -39,6 +40,7 @@ function MapNavigationGuia() {
       <Stack.Screen  name="Mapa" component={HomeGuia} />
       <Stack.Screen  name="CrearRecorrido" options={{gestureDirection: 'horizontal-inverted'}}component={CrearRecorrido} />
       <Stack.Screen  name="IniciarRecorrido" component={IniciarRecorrido} />
+      <Stack.Screen  name="RecorridoActivo" component={RecorridoActivo} />
       </Stack.Navigator>
   );
 }

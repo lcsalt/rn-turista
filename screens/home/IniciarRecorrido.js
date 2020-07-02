@@ -88,7 +88,7 @@ const IniciarRecorrido = (props) => {
       setIsSubmitting(false);
     }
     const recorridoActivoValues = {
-      recorrido: recorridoSelected,
+      recorrido: recorridoSelected[0],
       horarioComienzo: horarioComienzoParsed,
     };
     let success;
@@ -97,7 +97,7 @@ const IniciarRecorrido = (props) => {
       setIsSubmitting(false);
       Alert.alert('Error', 'Hubo un error al iniciar el recorrido.')
     }else{
-      setTimeout(()=>{ props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Mapa" }]}))}, 2000);
+      setTimeout(()=>{ props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoActivo" }]}))}, 2000);
       
     }
 

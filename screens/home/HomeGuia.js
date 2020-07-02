@@ -1,33 +1,45 @@
 import React, { useState, useEffect } from "react";
-import MapView, {PROVIDER_GOOGLE ,Marker, Callout} from "react-native-maps";
-import {  StyleSheet,  View,  Text,  Dimensions,  ActivityIndicator,  Alert,  TouchableOpacity} from "react-native";
+import MapView, {
+  PROVIDER_GOOGLE,
+  Marker,
+  Callout,
+  Polyline,
+} from "react-native-maps";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  ActivityIndicator,
+  Alert,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 
-import Boton from "../../components/Boton.js";
-import GuideMarker from "../../components/GuideMarker.js"
-import { colors } from "../../constants";
+import { CommonActions } from "@react-navigation/native";
 
-const io = require('socket.io-client');
-const socket = io('https://sheltered-bastion-34059.herokuapp.com/');
+
+import GuideMarker from "../../components/GuideMarker.js";
+import { colors, images } from "../../constants";
+
+const io = require("socket.io-client");
+
+const socket = io("https://sheltered-bastion-34059.herokuapp.com/");
 
 const HomeGuia = (props) => {
-  const [ isLocationPermissionGranted, setIsLocationPermissionGranted, ] = useState(null);
+  const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(null);
   const [guiasLocations, setGuiasLocations] = useState(null);
-  const [guiasKeys, setGuiasKeys] = useState(['']);
-  const [fueEnviadoRecorrido, setFueEnviadoRecorrido] = useState(false);
+  const [guiasKeys, setGuiasKeys] = useState([""]);
   const [recorridoDetalle, setRecorridoDetalle] = useState(null); //al clickear en el icono de un guía, se busca el recorrido y se guarda acá
-  
+
   const userToken = useSelector((state) => state.auth.token);
   const estadoRecorrido = useSelector((state) => state.recorridoActivo.estado);
-  const recorrido = useSelector((state) => state.recorridoActivo.recorrido);
-  const recorridoActivoId = useSelector((state) => state.recorridoActivo.recorridoId);
 
-  
-
-  /////PERMISOS Y CURRENT POSITION 
+  /////PERMISOS Y CURRENT POSITION
   useEffect(() => {
     let unmounted = false;
     console.log(estadoRecorrido);
@@ -37,69 +49,65 @@ const HomeGuia = (props) => {
         setIsLocationPermissionGranted(false);
       }
       setIsLocationPermissionGranted(true);
-      if(!unmounted){
+      if (!unmounted) {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location);
-        if(estadoRecorrido == 'Por empezar'){
-          if(!fueEnviadoRecorrido){ //1ra vez enviar todo y guardarlo en node en un array, crear la sala, y unirse
-            console.log('enviando ubicacion: ', location)
-            socket.emit('shareRecorridoActivo', ({
-              recorrido: recorrido,
-              coordinates: {latitude: location.coords.latitude, longitude: location.coords.longitude},
-              key: recorridoActivoId.toString(),
-              })
-            );
-            setFueEnviadoRecorrido(true);
-          }else{ //después solo envía la unicacion linkeada a una key para asociarla al recorrido y el room creado
-            console.log('enviando ubicacion: ', location)
-            socket.emit('shareGuideLocation', ({coordinates: {latitude: location.coords.latitude, longitude: location.coords.longitude}, key: recorridoActivoId.toString()}));
-          }
+        if (estadoRecorrido == "Por empezar") {
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "RecorridoActivo" }],
+            })
+          );
         }
       }
     })();
-    if(!unmounted){
-      socket.on('guideData', location => {
-        if(!guiasLocations){
+    if (!unmounted) {
+      socket.on("guideData", (location) => {
+        if (!guiasLocations) {
           setGuiasLocations([location]);
           setGuiasKeys([location.key]);
-        }else{
-          if(guiasKeys.includes(location.key)){
+        } else {
+          if (guiasKeys.includes(location.key)) {
             const newGuiasLocations = guiasLocations.filter((guideData) => {
-                                                                return guideData.key != location.key});
-            console.log('ubicacion recibida: ',location.coordinates);
+              return guideData.key != location.key;
+            });
+            console.log("ubicacion recibida: ", location.coordinates);
             newGuiasLocations.push(location);
             setGuiasLocations([...newGuiasLocations]);
-          }else{
+          } else {
             setGuiasLocations([...guiasLocations, location]);
             setGuiasKeys([...guiasKeys, location.key]);
           }
         }
       });
     }
-    
-    return () => { unmounted = true };
-}, []);
 
-  
+    return () => {
+      unmounted = true;
+    };
+  }, []);
 
-  
-
-  const handleGetRecorrido = async (key) =>{
-    //fetch get key=recorridoId 
+  const handleGetRecorrido = async (key) => {
+    //fetch get key=recorridoId
     const myHeaders = new Headers({
       "Content-Type": "application/json",
       Authorization: "Bearer " + userToken,
     });
-    let success = await fetch("https://sheltered-bastion-34059.herokuapp.com/api/recorridoInstancia/"+key, {
-      method: "GET",
-      headers: myHeaders,
-    }).then((res) => {
+    let success = await fetch(
+      "https://sheltered-bastion-34059.herokuapp.com/api/recorridoInstancia/" +
+      key,
+      {
+        method: "GET",
+        headers: myHeaders,
+      }
+    ).then((res) => {
       if (res.status === 200) {
         res.json().then((response) => {
           //setRecorridoDetalle(response);
           console.log(response);
           return true;
-        })
+        });
       } else if (res.status === 500) {
         Alert.alert("Error", "Hubo un error, intenta nuevamente");
         setIsLoading(false);
@@ -109,13 +117,13 @@ const HomeGuia = (props) => {
         setIsLoading(false);
         return false;
       }
-    })
+    });
   };
 
   let text = "Esperando permisos...";
   if (!isLocationPermissionGranted) {
     text = "No puede utilizarse esta función si no otorgas permisos.";
-  } 
+  }
 
   return (
     <View style={styles.screen}>
@@ -132,55 +140,50 @@ const HomeGuia = (props) => {
               longitudeDelta: 0.0421,
             }}
           >
-            
             <GuideMarker
-              coordinate={{latitude: location.coords.latitude, longitude: location.coords.longitude}}
-              title={'Guía'} 
-              onPress={()=>{}}/>
-          {guiasLocations ? (
-            guiasLocations.map((guideData) => {
-              return (<GuideMarker 
-                           key={guideData.key}
-                           coordinate={guideData.coordinates}
-                           onPress={() => handleGetRecorrido(guideData.key)}
+              coordinate={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }}
+              title={"Yo"}
+              onPress={() => { }}
+            />
+            {guiasLocations
+              ? guiasLocations.map((guideData) => {
+                return (
+                  <GuideMarker
+                    key={guideData.key}
+                    coordinate={guideData.coordinates}
+                    onPress={() => handleGetRecorrido(guideData.key)}
                   />
-              );
-          })
-          ):(
-            null
-          )}
-
+                );
+              })
+              : null}
           </MapView>
-          {(estadoRecorrido == 'Por empezar') ? 
-          (
 
-            null
-
-          ):(
-          <View style={{position: "absolute", marginHorizontal: 50,  bottom: Dimensions.get("window").height * 1/100, left: '48%',}}>
-            <View  style={{}}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('IniciarRecorrido')}}
-                                style={{...styles.horizontalButton,  backgroundColor: colors.WHITE,}}><Text style={{...styles.buttonText, color: colors.PRIMARY,}}>¡Iniciar recorrido!</Text></TouchableOpacity>
+          <View style={{position: "absolute",marginHorizontal: 50,bottom: (Dimensions.get("window").height * 1) / 100,left: "48%",}}>
+            <View style={{}}>
+              <TouchableOpacity onPress={() => {props.navigation.navigate("IniciarRecorrido");}} style={{...styles.horizontalButton, backgroundColor: colors.WHITE,}}>
+                <Text style={{ ...styles.buttonText, color: colors.PRIMARY }}> ¡Iniciar recorrido! </Text>
+              </TouchableOpacity>
             </View>
-            <View  style={{marginVertical: 10,}}>
-              <TouchableOpacity onPress={() => {props.navigation.navigate('CrearRecorrido')}}
-                                style={styles.horizontalButton}><Text style={styles.buttonText}>Crear recorrido</Text></TouchableOpacity>
+            <View style={{ marginVertical: 10 }}>
+              <TouchableOpacity onPress={() => {props.navigation.navigate("CrearRecorrido");}} style={styles.horizontalButton}>
+                <Text style={styles.buttonText}>Crear recorrido</Text>
+              </TouchableOpacity>
             </View>
           </View>
-          )}
-             
         </View>
       ) : (
-        //Pantalla de carga
-        <View>
-          <Text style={{ marginBottom: 20 }}>{text}</Text>
-          <ActivityIndicator size="large" color={colors.PRIMARY} />
-        </View>
-      )}
+          //Pantalla de carga
+          <View>
+            <Text style={{ marginBottom: 20 }}>{text}</Text>
+            <ActivityIndicator size="large" color={colors.PRIMARY} />
+          </View>
+        )}
     </View>
   );
 };
-
 
 //STYLES
 const styles = StyleSheet.create({
@@ -211,23 +214,23 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: colors.PRIMARY,
     borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
   },
   horizontalButton: {
     width: 150,
     height: 50,
     backgroundColor: colors.PRIMARY,
-    borderRadius:20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    shadowColor: 'rgba(0,0,0, .4)', 
-    shadowOffset: { height: 1, width: 1 }, 
-    shadowOpacity: 1, 
-    shadowRadius: 1, 
-    elevation: 2, 
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    shadowColor: "rgba(0,0,0, .4)",
+    shadowOffset: { height: 1, width: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    elevation: 2,
   },
 });
 
