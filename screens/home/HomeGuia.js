@@ -18,10 +18,14 @@ import {
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 
+import { CommonActions } from "@react-navigation/native";
+
+
 import GuideMarker from "../../components/GuideMarker.js";
 import { colors, images } from "../../constants";
 
 const io = require("socket.io-client");
+
 const socket = io("https://sheltered-bastion-34059.herokuapp.com/");
 
 const HomeGuia = (props) => {
@@ -141,7 +145,7 @@ const HomeGuia = (props) => {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
               }}
-              title={"Guía"}
+              title={"Yo"}
               onPress={() => { }}
             />
             {guiasLocations
