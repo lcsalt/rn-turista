@@ -8,7 +8,6 @@ export const SET_FINALIZAR = 'SET_FINALIZAR';
 export const SET_INICIAR = 'SET_INICIAR';
 
 export const setFinalizar = () => {
-  console.log('2 ///', 'recorrido finalizado');
     return {
         type: SET_FINALIZAR
     };
@@ -154,11 +153,80 @@ export const cancelarRecorrido = (userToken, recorridoId) => {
       })
         .then((res) =>{
           if (res.status === 200) {
-            console.log('//handle cancel 2 // Store recorridoActivo cancelarRecorrido')
               dispatch(setFinalizar());
               return true;
         } else if(res.status === 500){
           Alert.alert('Error', 'Hubo un error al cancelar el recorrido, intente nuevamente.');
+          return false;
+        } else {
+          console.log(res.status);
+          return false;
+        }})
+        //.then((json) => {
+        //})
+        .catch((err) => {
+          Alert.alert('Error', 'Ocurrió un error, intente nuevamente');
+          console.log(err);
+        });
+    };
+}
+
+export const unirseRecorrido = (userToken, recorridoId) => {
+  
+  const myHeaders = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + userToken,
+    });
+  const id = recorridoId.toString();
+  console.log(userToken, id)
+    return (dispatch) => {  // importante el dispatch acá
+      return fetch('https://sheltered-bastion-34059.herokuapp.com/api/recorridoInstancia/unirse/'+id, {
+        method: 'PUT',
+        headers: myHeaders,
+      })
+        .then((res) =>{
+          if (res.status === 200) {
+            res.json().then((response) =>{
+              const estado = response.recorrido.estado;
+              const recorrido = response.recorrido.recorrido;
+              const recorridoId = response.recorrido._id;
+              const horarioComienzo = new Date(response.recorrido.horarioComienzo);
+              dispatch(setRecorrido({ estado, recorrido, recorridoId, horarioComienzo }));
+              return true;
+            })
+        } else if(res.status === 500){
+          Alert.alert('Error', 'Hubo un error al unirse el recorrido, intente nuevamente.');
+          return false;
+        } else {
+          console.log(res.status);
+          return false;
+        }})
+        //.then((json) => {
+        //})
+        .catch((err) => {
+          Alert.alert('Error', 'Ocurrió un error, intente nuevamente');
+          console.log(err);
+        });
+    };
+}
+
+export const abandonarRecorrido = (userToken, recorridoId) => {
+  const myHeaders = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + userToken,
+    });
+  const id = recorridoId.toString();
+    return (dispatch) => {  // importante el dispatch acá
+      return fetch('https://sheltered-bastion-34059.herokuapp.com/api/recorridoInstancia/abandonar/'+id, {
+        method: 'PUT',
+        headers: myHeaders,
+      })
+        .then((res) =>{
+          if (res.status === 200) {
+            dispatch(setFinalizar());
+              return true;
+        } else if(res.status === 500){
+          Alert.alert('Error', 'Hubo un error al abandonar el recorrido, intente nuevamente.');
           return false;
         } else {
           console.log(res.status);
