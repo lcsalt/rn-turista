@@ -24,6 +24,7 @@ const HomeGuiaRecorridoActivo = (props) => {
     const [recorridoActivoCoords, setRecorridoActivoCoords] = useState([{ latitude: 0, longitude: 0 }]);
     const [puntoDeInicio, setPuntoDeInicio] = useState({ latitude: 0, longitude: 0 });
     const [recorridoActivo, setRecorridoActivo] = useState([{index: '', coordinates: { latitude: 0, longitude: 0 }}]);
+    const [usuariosInscriptos, setUsuariosInscriptos] = useState(0);
 
     const userToken = useSelector((state) => state.auth.token);
     const estadoRecorrido = useSelector((state) => state.recorridoActivo.estado);
@@ -72,6 +73,7 @@ const HomeGuiaRecorridoActivo = (props) => {
                     if (!fueEnviadoRecorrido) { //1ra vez enviar todo y guardarlo en node en un array, crear la sala, y unirse
                         console.log('enviando ubicacion 1: ', location)
                         socket.emit('shareRecorridoActivo', ({
+                            usuariosInscriptos: usuariosInscriptos,
                             recorrido: recorrido,
                             coordinates: { latitude: location.coords.latitude, longitude: location.coords.longitude },
                             key: recorridoActivoId.toString(),
@@ -85,6 +87,17 @@ const HomeGuiaRecorridoActivo = (props) => {
                 }
             }
         })();
+        if (!unmounted) {
+            socket.on("inscripciónUsuario", (cantUsuariosInscriptos) => {
+                setUsuariosInscriptos(cantUsuariosInscriptos);
+                socket.emit('shareRecorridoDataToRoom', recorridoActivoId); 
+            });
+            socket.on("abandonoUsuario", (cantUsuariosInscriptos) => {
+                console.log('USUARIO ABANDONO')
+                setUsuariosInscriptos(cantUsuariosInscriptos);
+                socket.emit('shareRecorridoDataToRoom', recorridoActivoId); 
+            });
+        }
         return () => { unmounted = true };
     }, []);
 
@@ -143,6 +156,7 @@ const HomeGuiaRecorridoActivo = (props) => {
 
                     </MapView>
                     <RecorridoActivoGuia nombreRecorrido={recorrido.nombre}
+                                         usuariosInscriptos={usuariosInscriptos}
                                          maxParticipantes={recorrido.maxParticipantes}
                                          horarioComienzo={horarioComienzoRecorrido} 
                                          cancelarRecorrido={()=>{returnToMainMap(); cancelarRecorrido();}}

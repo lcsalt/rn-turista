@@ -2,11 +2,11 @@ import React from "react";
 import { View, Image,TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
 
-import { cancelarRecorrido } from '../store/actions/recorridoActivo';
+import { abandonarRecorrido } from '../store/actions/recorridoActivo';
 import Boton from "./Boton.js"
 import { colors, images } from "../constants";
 
-const RecorridoActivoGuia = (props) => {
+const RecorridoActivoTurista = (props) => {
   const horarioComienzo = props.horarioComienzo;
   const userToken = useSelector((state) => state.auth.token);
   const recorridoId = useSelector((state) => state.recorridoActivo.recorridoId);
@@ -21,9 +21,8 @@ const RecorridoActivoGuia = (props) => {
 
   
   const dispatch = useDispatch();
-  const handleCancelarRecorrido = () => {
-    console.log('//handle cancel 1 // handlecancelarRecorridoBoton')
-    dispatch(cancelarRecorrido(userToken, recorridoId))
+  const handleAbandonarRecorrido = () => {
+    dispatch(abandonarRecorrido(userToken, recorridoId))
     .then((res)=>  props.cancelarRecorrido())
     
   };
@@ -32,7 +31,7 @@ const RecorridoActivoGuia = (props) => {
     return (
         <View>
             <View style={styles.recorridoPorEmpezar}>
-    <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{props.nombreRecorrido}</Text>
+                <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{props.nombreRecorrido}</Text>
                 <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                     <Image
                         source={images.crowd}
@@ -47,7 +46,7 @@ const RecorridoActivoGuia = (props) => {
                 <Text style={{ fontFamily: "openSansBold", fontSize: 16, marginTop: 1, color: colors.TEXT_DARK, }}>{horarioComienzo.getHours()}:{minutos} hs</Text>
             </View>
             <View style={styles.cancelarRecorridoBox}>
-                <Boton text={'Cancelar Recorrido'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.ERROR }} onPress={handleCancelarRecorrido} />
+                <Boton text={'Abandonar Recorrido'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.ERROR }} onPress={handleAbandonarRecorrido} />
             </View>
         </View>
     );
@@ -112,4 +111,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default RecorridoActivoGuia;
+export default RecorridoActivoTurista;

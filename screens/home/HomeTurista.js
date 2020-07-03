@@ -4,6 +4,10 @@ import {  StyleSheet,  View,  Text,  Dimensions,  ActivityIndicator,  Alert,  To
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 
+import { CommonActions } from "@react-navigation/native";
+
+
+import { unirseRecorrido } from '../../store/actions/recorridoActivo';
 import GuideMarker from "../../components/GuideMarker.js";
 import { colors, images } from "../../constants";
 import DetalleRecorrido from "../../components/DetalleRecorrido.js";
@@ -14,6 +18,7 @@ const io = require("socket.io-client");
 const HomeTurista = (props) => {
   const [isLocationPermissionGranted, setIsLocationPermissionGranted] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [location, setLocation] = useState(null);
   const [guiasLocations, setGuiasLocations] = useState(null);
   const [guiasKeys, setGuiasKeys] = useState([""]);
@@ -41,6 +46,7 @@ const HomeTurista = (props) => {
       }
     })();
     if (!unmounted) {
+      
       const socket = io("https://sheltered-bastion-34059.herokuapp.com/");
       socket.on("guideData", (location) => {
         if (!guiasLocations) {
@@ -123,15 +129,30 @@ const HomeTurista = (props) => {
   const cancelarDetalle = () =>{
     setRecorridoDetalle(null);
   }
+  
+  const dispatch = useDispatch();
+  const joinRecorrido = (recorridoId) => {
+    setIsSubmitting(true);
+    let success;
+    success =  dispatch(unirseRecorrido(userToken, recorridoId));
+    if (!success) {
+      setIsSubmitting(false);
+      Alert.alert('Error', 'Hubo un error al iniciar el recorrido.')
+    }else{
+      setTimeout(()=>{ props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoActivo" }]}))}, 2000);
+      
+    }
+   
+  }
 
-  let text = "Esperando permisos...";
+  let text = "Cargando...";
   if (!isLocationPermissionGranted) {
     text = "No puede utilizarse esta función si no otorgas permisos.";
   }
 
   return (
     <View style={styles.screen}>
-      {location ? (
+      {location && !isSubmitting ? (
         <View>
         <MapView
           style={styles.mapStyle}
@@ -196,7 +217,10 @@ const HomeTurista = (props) => {
            nombreRecorrido={recorridoDetalle.recorrido.recorrido.nombre}
            idioma={recorridoDetalle.recorrido.recorrido.idioma}
            maxParticipantes={recorridoDetalle.recorrido.recorrido.maxParticipantes}
-           cancelar={()=> cancelarDetalle()}/>
+           cancelar={()=> cancelarDetalle()}
+           unirse={()=> joinRecorrido(recorridoDetalle.recorrido._id)}
+           />
+           
        )
        :(null)}
        </View>
