@@ -4,6 +4,7 @@ import { createStackNavigator, TransitionPresets, CardStyleInterpolators} from '
 
 import HomeGuia from '../screens/home/HomeGuia.js';
 import RecorridoActivo from '../screens/home/HomeGuiaRecorridoActivo.js';
+import RecorridoEnCurso from '../screens/home/HomeGuiaRecorridoEnCurso.js';
 import CrearRecorrido from '../screens/home/CrearRecorrido.js';
 import IniciarRecorrido from '../screens/home/IniciarRecorrido.js';
 
@@ -41,6 +42,7 @@ function MapNavigationGuia() {
       <Stack.Screen  name="CrearRecorrido" options={{gestureDirection: 'horizontal-inverted'}}component={CrearRecorrido} />
       <Stack.Screen  name="IniciarRecorrido" component={IniciarRecorrido} />
       <Stack.Screen  name="RecorridoActivo" component={RecorridoActivo} />
+      <Stack.Screen  name="RecorridoEnCurso" component={RecorridoEnCurso} />
       </Stack.Navigator>
   );
 }

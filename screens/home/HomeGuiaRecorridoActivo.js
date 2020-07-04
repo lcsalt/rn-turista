@@ -34,7 +34,10 @@ const HomeGuiaRecorridoActivo = (props) => {
 
     const returnToMainMap = () => {
         props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Mapa" }]}));
-        console.log('//handle cancel 4 // return mapa')
+        
+    }
+    const switchToEnCursoMap = ()=>{
+        props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoEnCurso" }]}));
     }
 
     const cancelarRecorrido = () =>{
@@ -42,8 +45,14 @@ const HomeGuiaRecorridoActivo = (props) => {
             key: recorridoActivoId.toString(),
         }
         
-        console.log('//handle cancel 3 // cancelarRecorrido socket')
         socket.emit('cancelarRecorrido', data);
+    }
+
+    const comenzarRecorrido = () =>{
+        const data = {
+            key: recorridoActivoId.toString(),
+        }
+        socket.emit('iniciarRecorrido', data);
     }
 
     /////PERMISOS Y CURRENT POSITION 
@@ -71,7 +80,6 @@ const HomeGuiaRecorridoActivo = (props) => {
                     setRecorridoActivo(recorrido.recorrido);
                     /////
                     if (!fueEnviadoRecorrido) { //1ra vez enviar todo y guardarlo en node en un array, crear la sala, y unirse
-                        console.log('enviando ubicacion 1: ', location)
                         socket.emit('shareRecorridoActivo', ({
                             usuariosInscriptos: usuariosInscriptos,
                             recorrido: recorrido,
@@ -81,7 +89,7 @@ const HomeGuiaRecorridoActivo = (props) => {
                         );
                         setFueEnviadoRecorrido(true);
                     } else { //después solo envía la unicacion linkeada a una key para asociarla al recorrido y el room creado
-                        console.log('enviando ubicacion denuevo: ', location)
+                        
                         socket.emit('shareGuideLocation', ({ coordinates: { latitude: location.coords.latitude, longitude: location.coords.longitude }, key: recorridoActivoId.toString() }));
                     }
                 }
@@ -93,7 +101,6 @@ const HomeGuiaRecorridoActivo = (props) => {
                 socket.emit('shareRecorridoDataToRoom', recorridoActivoId); 
             });
             socket.on("abandonoUsuario", (cantUsuariosInscriptos) => {
-                console.log('USUARIO ABANDONO')
                 setUsuariosInscriptos(cantUsuariosInscriptos);
                 socket.emit('shareRecorridoDataToRoom', recorridoActivoId); 
             });
@@ -148,7 +155,8 @@ const HomeGuiaRecorridoActivo = (props) => {
                         <Polyline
                             coordinates={recorridoActivoCoords}
                             strokeColor={colors.PRIMARY}
-                            strokeWidth={3}
+                            strokeWidth={2}
+                            lineCap={'round'}
                         />
 
 
@@ -160,6 +168,7 @@ const HomeGuiaRecorridoActivo = (props) => {
                                          maxParticipantes={recorrido.maxParticipantes}
                                          horarioComienzo={horarioComienzoRecorrido} 
                                          cancelarRecorrido={()=>{returnToMainMap(); cancelarRecorrido();}}
+                                         comenzarRecorrido={()=>{switchToEnCursoMap(); comenzarRecorrido();}}
                     />
                 </View>
             ) : (
