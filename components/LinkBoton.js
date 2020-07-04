@@ -16,7 +16,7 @@ const LinkBoton = (props) => {
 
 LinkBoton.propTypes = {
   text: PropTypes.string.isRequired,
-  //onPress: PropTypes.func.isRequired,
+  onPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

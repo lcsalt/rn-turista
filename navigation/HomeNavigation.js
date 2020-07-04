@@ -10,9 +10,8 @@ import { Feather } from '@expo/vector-icons';
 import { colors } from "../constants";
 import MapNavigationGuia from "./MapNavigationGuia.js";
 import HomeTurista from "../screens/home/HomeTurista.js";
-import Perfil from "../screens/home/Perfil.js";
-import Mochila from "../screens/home/Mochila.js";
 import PerfilNavigation from "./PerfilNavigation";
+import MochilaNavigation from "./MochilaNavigation";
 
 
 
@@ -47,7 +46,7 @@ function HomeNavigation() {
       >
       <Tab.Screen name="Perfil" component={PerfilNavigation} />
       <Tab.Screen name="Mapa" component={HomeTurista} />
-      <Tab.Screen name="Mochila" component={Mochila}  />
+      <Tab.Screen name="Mochila" component={MochilaNavigation}  />
       </Tab.Navigator>
     );
   }
@@ -74,7 +73,7 @@ function HomeNavigation() {
       >
       <Tab.Screen name="Perfil" component={PerfilNavigation} />
       <Tab.Screen name="Mapa" component={MapNavigationGuia} />
-      <Tab.Screen name="Mochila" component={Mochila}  />
+      <Tab.Screen name="Mochila" component={MochilaNavigation}  />
       </Tab.Navigator> 
  
     );
