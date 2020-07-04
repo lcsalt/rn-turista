@@ -4,6 +4,7 @@ import { createStackNavigator, TransitionPresets, CardStyleInterpolators} from '
 
 import HomeTurista from '../screens/home/HomeTurista.js';
 import RecorridoActivo from '../screens/home/HomeTuristaRecorridoActivo.js';
+import RecorridoEnCurso from '../screens/home/HomeTuristaRecorridoEnCurso.js';
 
 const Stack = createStackNavigator();
 const config = {
@@ -37,6 +38,7 @@ function MapNavigationGuia() {
                       animation="fade">
       <Stack.Screen  name="Mapa" component={HomeTurista} />
       <Stack.Screen  name="RecorridoActivo" component={RecorridoActivo} />
+      <Stack.Screen  name="RecorridoEnCurso" component={RecorridoEnCurso} />
       </Stack.Navigator>
   );
 }

@@ -14,6 +14,7 @@ export const setCredentials = (authValues) => {
     return { type: SET_CREDENTIALS, 
              token: authValues.token,
              role: authValues.role,
+             nombre: authValues.nombre,
             };
 };
 
@@ -34,7 +35,8 @@ export const login = (loginInput) => {
           res.json().then((response) =>{
             const role = response.role;
             const token = response.token;
-            dispatch(setCredentials({ role, token }));
+            const nombre = response.nombre;
+            dispatch(setCredentials({ role, token, nombre }));
             return true;
           })
           

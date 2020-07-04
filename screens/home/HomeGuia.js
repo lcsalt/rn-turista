@@ -59,6 +59,8 @@ const HomeGuia = (props) => {
               routes: [{ name: "RecorridoActivo" }],
             })
           );
+        }else if (estadoRecorrido == "En curso"){
+          props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoEnCurso" }],}));
         }
       }
     })();

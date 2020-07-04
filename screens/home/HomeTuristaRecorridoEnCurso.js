@@ -7,51 +7,48 @@ import { useSelector, useDispatch } from "react-redux";
 import { CommonActions } from "@react-navigation/native";
 
 import { setFinalizar } from '../../store/actions/recorridoActivo';
-import { setIniciar } from '../../store/actions/recorridoActivo';
 
-import Boton from "../../components/Boton.js";
 import GuideMarker from "../../components/GuideMarker.js";
-import RecorridoActivoTurista from "../../components/RecorridoActivoTurista.js"
 import { colors, images } from "../../constants";
 
 const io = require('socket.io-client');
+
 const socket = io('https://sheltered-bastion-34059.herokuapp.com/');
 
         
-const HomeTuristaRecorridoActivo = (props) => {
-    const [estaUnidoAlSocket, setEstaUnidoAlSocket] = useState(false);
+const HomeGuiaRecorridoEnCurso = (props) => {
     const [isLocationPermissionGranted, setIsLocationPermissionGranted,] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [location, setLocation] = useState(null);
     const [recorridoActivoCoords, setRecorridoActivoCoords] = useState([{ latitude: 0, longitude: 0 }]);
     const [puntoDeInicio, setPuntoDeInicio] = useState({ latitude: 0, longitude: 0 });
     const [recorridoActivo, setRecorridoActivo] = useState([{index: '', coordinates: { latitude: 0, longitude: 0 }}]);
-    
     const [guiaLocation, setGuiaLocation] = useState(null);
-    const [guiaKey, setGuiaKey] = useState('');
-    const [usuariosInscriptos, setUsuariosInscriptos] = useState(0);
-
+    const [turistasLocations, setTuristasLocations] = useState(null);
+    
+    
+    
+    const userName = useSelector((state) => state.auth.nombre);
     const userToken = useSelector((state) => state.auth.token);
     const estadoRecorrido = useSelector((state) => state.recorridoActivo.estado);
     const recorrido = useSelector((state) => state.recorridoActivo.recorrido);
     const recorridoActivoId = useSelector((state) => state.recorridoActivo.recorridoId);
-    const horarioComienzoRecorrido = useSelector((state) => state.recorridoActivo.horarioComienzo);
 
+    
     const returnToMainMap = () => {
         props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "Mapa" }]}));
+        
     }
-    const switchToEnCursoMap = ()=>{
-        props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoEnCurso" }]}));
-    }
-    const abandonarRecorrido = () =>{
-        const recorridoId = recorridoActivoId.toString();
-        socket.emit('leaveRecorrido',recorridoId);
+    const dispatch = useDispatch();
+    const finalizarRecorrido = () =>{
+        let success = dispatch(setFinalizar());
+        returnToMainMap();        
     }
 
-    const dispatch = useDispatch();
+
     /////PERMISOS Y CURRENT POSITION 
     useEffect(() => {
         let unmounted = false;
+        console.log(estadoRecorrido);
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
             if (status !== "granted") {
@@ -61,7 +58,7 @@ const HomeTuristaRecorridoActivo = (props) => {
             if (!unmounted) {
                 let location = await Location.getCurrentPositionAsync({});
                 setLocation(location);
-                if (estadoRecorrido == 'Por empezar') {
+                if (estadoRecorrido == 'En curso') {
                     //guardo en el estado el array de puntos del recorrido
                     const recorridoPoints = recorrido.recorrido;
                     const recorridoCoordinates = recorridoPoints.map((punto) => {
@@ -70,48 +67,44 @@ const HomeTuristaRecorridoActivo = (props) => {
                     setRecorridoActivoCoords([recorrido.puntoInicio, ...recorridoCoordinates]);
                     setPuntoDeInicio(recorrido.puntoInicio);
                     setRecorridoActivo(recorrido.recorrido);
-                }else{
-                    returnToMainMap();
+                    /////
+                    //Enviar ubicación
+                    console.log('1.b// envio ubicacion turista a grupo ')
+                    socket.emit('shareTuristaLocationGrupo', ({ coordinates: { latitude: location.coords.latitude, longitude: location.coords.longitude }, key: recorridoActivoId.toString(), nombre: userName })); 
+                    
                 }
             }
         })();
-        if(!unmounted){
-            if(!estaUnidoAlSocket){
-                socket.emit('joinRecorrido', recorridoActivoId);
-                setEstaUnidoAlSocket(true);
-            }
-            socket.on("recorridoData", (recorrido) => {
-                
-                  setGuiaLocation(recorrido.locationActual);
-                  setGuiaKey(recorrido.id);
-                  setUsuariosInscriptos(recorrido.usuariosInscriptos);
-                
-              });
+        if (!unmounted) {
             
-            
-            socket.on('cancelarRecorrido',()=>{
-                let success = dispatch(setFinalizar())
-                returnToMainMap();
+            //Recibe ubicacion de todos los turistas
+            socket.on("locationsTuristas", (locations) => {
+                console.log('3.b// recibo locacion de todos los turistas')
+                const newTuristasLocations = locations.filter((turistaData) => {
+                    return turistaData.nombre != miNombre;
+                  });
+                  setTuristasLocations([...newTuristasLocations]);
             });
-            socket.on('iniciarRecorrido', ()=>{
-                let success = dispatch(setIniciar())
-                switchToEnCursoMap();
+            socket.on('guiaLocation', (location) =>{
+                console.log('2.b// recibo locacion de guia (turista)')
+                setGuiaLocation(location);
+            })
+            socket.on('finRecorrido', ()=>{
+                finalizarRecorrido();
             })
         }
-        
-
         return () => { unmounted = true };
     }, []);
 
 
-    let text = "Esperando permisos...";
+    let text = "Cargando...";
     if (!isLocationPermissionGranted) {
         text = "No puede utilizarse esta función si no otorgas permisos.";
     }
 
     return (
         <View style={styles.screen}>
-            {location && (estadoRecorrido == 'Por empezar') ? (
+            {location && (estadoRecorrido == 'En curso') ? (
                 <View>
                     <MapView
                         provider={PROVIDER_GOOGLE}
@@ -124,8 +117,6 @@ const HomeTuristaRecorridoActivo = (props) => {
                             longitudeDelta: 0.0421,
                         }}
                     >
-
-                        
 
                         <Marker
                             key={'Punto Inicial'}
@@ -150,26 +141,29 @@ const HomeTuristaRecorridoActivo = (props) => {
                             strokeWidth={2}
                             lineCap={'round'}
                         />
-
+                        {turistasLocations ? (
+                            turistasLocations.map((turistaData) => {
+                                return (
+                                <Marker
+                                    key={turistaData.nombre}
+                                    coordinate={turistaData.coordinates}
+                                    title={turistaData.nombre}
+                                > 
+                                    <Image source={images.iconTuristaMap} />
+                                </Marker>
+                                );
+                            }))
+                            : null}
                         {guiaLocation ? (
-
                             <GuideMarker
-                            coordinate={guiaLocation}
-                            title={'Tu Guía'}
+                            key={guiaLocation.nombre}
+                            coordinate={guiaLocation.coordinates}
+                            title={guiaLocation.nombre}
                             onPress={() => { }} />
-
-                        ):(null)
-
-                        }
-
-
+                        ):(
+                            null
+                        )}
                     </MapView>
-                    <RecorridoActivoTurista nombreRecorrido={recorrido.nombre}
-                                            usuariosInscriptos={usuariosInscriptos}
-                                            maxParticipantes={recorrido.maxParticipantes}
-                                            horarioComienzo={horarioComienzoRecorrido} 
-                                            cancelarRecorrido={()=>{returnToMainMap(); abandonarRecorrido();}}
-                    />
                 </View>
             ) : (
                     //Pantalla de carga
@@ -282,4 +276,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeTuristaRecorridoActivo;
+export default HomeGuiaRecorridoEnCurso;

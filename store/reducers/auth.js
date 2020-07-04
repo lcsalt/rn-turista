@@ -4,6 +4,7 @@ const initialState = {
     isLoggedIn: false,
     token: '',
     role: '',
+    nombre: '',
 }
 
 const authReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ const authReducer = (state = initialState, action) => {
             return {...state, 
                     token: action.token,
                     role: action.role,
+                    nombre: action.nombre,
                     isLoggedIn: true}
         case SET_LOGOUT:
             return {...state,

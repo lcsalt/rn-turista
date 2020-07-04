@@ -42,7 +42,7 @@ export const iniciarRecorrido = (userToken, recorridoId) => {
       });
     const id = recorridoId.toString();
       return (dispatch) => {  // importante el dispatch acá
-        return fetch('https://sheltered-bastion-34059.herokuapp.com/api/iniciar/'+id, {
+        return fetch('https://sheltered-bastion-34059.herokuapp.com/api/recorridoInstancia/iniciar/'+id, {
           method: 'PUT',
           headers: myHeaders,
         })
