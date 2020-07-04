@@ -22,7 +22,7 @@ const Perfil = ({ navigation },props) =>{
   const [celular, setCelular] = useState(" ");
   const [genero, setGenero] = useState(" ");
   const [loading, setLoading] = useState(true);
-  const [foto, setFoto] = useState("");
+  const [foto, setFoto] = useState(images.iconoTuristas);
   const dispatch = useDispatch();
   const handleLogout = () =>{
     dispatch( setLogout() );

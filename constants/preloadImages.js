@@ -21,8 +21,12 @@ export default {
   iconGuiaHombre,
   iconGuiaMujer,
   iconGuiaGenerico,
+<<<<<<< HEAD
+  crowd
+=======
   crowd,
   iconGuiaMap,
   iconTuristaMap,
   
+>>>>>>> 95d4d440a8dbd3fca79237afd8afb23fcfe3503c
 };

@@ -12,6 +12,7 @@ import MapNavigationGuia from "./MapNavigationGuia.js";
 import MapNavigationTurista from "./MapNavigationTurista.js";
 import Mochila from "../screens/home/Mochila.js";
 import PerfilNavigation from "./PerfilNavigation";
+import MochilaNavigation from "./MochilaNavigation";
 
 
 
@@ -46,7 +47,7 @@ function HomeNavigation() {
       >
       <Tab.Screen name="Perfil" component={PerfilNavigation} />
       <Tab.Screen name="Mapa" component={MapNavigationTurista} />
-      <Tab.Screen name="Mochila" component={Mochila}  />
+      <Tab.Screen name="Mochila" component={MochilaNavigation}  />
       </Tab.Navigator>
     );
   }
@@ -73,7 +74,7 @@ function HomeNavigation() {
       >
       <Tab.Screen name="Perfil" component={PerfilNavigation} />
       <Tab.Screen name="Mapa" component={MapNavigationGuia} />
-      <Tab.Screen name="Mochila" component={Mochila}  />
+      <Tab.Screen name="Mochila" component={MochilaNavigation}  />
       </Tab.Navigator> 
  
     );
