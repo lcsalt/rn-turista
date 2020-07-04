@@ -38,7 +38,7 @@ const DetalleRecorrido = (props) => {
                 <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                     <Text style={{ ...styles.text, marginLeft: 10, }}>0/{maxParticipantes} Turistas Inscriptos</Text>
                 </View>
-                <LinkBoton text={'¡Unirse!'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.PRIMARY }} onPress={() => {}} />
+                <LinkBoton text={'¡Unirse!'} customStyle={{ maxWidth: '100%', paddingHorizontal: 10, backgroundColor: colors.PRIMARY }} onPress={props.unirse} />
 
             </View>
             <View style={styles.horarioComienzoBox}>

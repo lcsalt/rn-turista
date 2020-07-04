@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, FlatList ,SafeAreaView , TouchableOpacity,ActivityIndicator} from "react-native";
+import { StyleSheet, View, Text,Dimensions, FlatList ,SafeAreaView , ImageBackground,ActivityIndicator} from "react-native";
 import { useDispatch, useSelector} from 'react-redux';
-import { colors } from "../../constants";
+import { images, colors } from "../../constants";
 import LinkBoton from "../../components/LinkBoton"
 
 
@@ -60,8 +60,8 @@ if(loading){
         <Text style={styles.text}>cargando registro...</Text>
       </View>
 )} else {
-  if(status != "200"){
-
+  if(recorridos === null || recorridos.length === 0){
+console.log(status)
     return (
       <View style={styles.screen}>
         <Text style={styles.text}>Mochila</Text>
@@ -80,13 +80,20 @@ function Item({ title }) {
 }
 
   return (
-    <SafeAreaView style={styles.container}>
+<ImageBackground source={images.backgroundImg}  style={{width: '100%', height: '100%'}}>
+  
+    <SafeAreaView >
+    <View style={styles.screen}>
+  <Text style={styles.title}> Revivi tus recorridos: </Text>
       <FlatList
         data={recorridos}
         renderItem={({ item }) => <Item title={item}  />}
         keyExtractor={item => item.id}
       />
+      </View>
     </SafeAreaView>
+    
+    </ImageBackground>
   );
 
     
@@ -99,10 +106,14 @@ function Item({ title }) {
 
 const styles = StyleSheet.create({
     screen: {
-      flex: 1,
-      backgroundColor: colors.WHITE,
-      alignItems: "center",
-      justifyContent: "center",
+      alignSelf: 'center',
+      marginVertical: Dimensions.get('window').height * 7 / 100,
+      height: Dimensions.get('window').height * 85 / 100,
+      width: Dimensions.get('window').width * 90 / 100,
+      backgroundColor: colors.WHITE_DARK,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     text: {
       fontFamily: "openSansSemibold",
@@ -127,15 +138,25 @@ const styles = StyleSheet.create({
     },
     item: {
       backgroundColor: colors.PRIMARY_LIGHT,
-      padding: 20,
+      padding: 10,
       marginVertical: 8,
-      marginHorizontal: 16,
+      marginHorizontal: 10,
       alignItems: "center",
       justifyContent: "center",
+      borderWidth: 4,
+      borderColor: "#20232a",
+      borderRadius: 6,
     },
     title: {
-      fontSize: 32,
-    },
+      marginTop: 0,
+      textDecorationLine: 'underline',
+      fontFamily: "openSansSemibold",
+      paddingVertical: 5,
+      color: "#20232a",
+      textAlign: "center",
+      fontSize: 20,
+      fontWeight: "bold"
+    }
 });
 
 export default Mochila;

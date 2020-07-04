@@ -89,8 +89,14 @@ const MochilaDetails= ({ route,navigation },props) =>{
             :(null)}
 
         </MapView>
-      
-        </View>
+        <View style={styles.cardDetails}>
+        <Text style={styles.title}>Detalle del recorrido</Text>
+        <Text style={styles.textDetails}><Text style={styles.textTitulo}>Recorrido:</Text> {recorridoDetalle.recorrido.nombre}</Text>
+        <Text style={styles.textDetails}><Text style={styles.textTitulo}>Dia:</Text> {recorridoDetalle.horarioComienzo.split("T", 1)}  </Text>
+        <Text style={styles.textDetails}><Text style={styles.textTitulo}>Duracion:</Text> {recorridoDetalle.recorrido.duracionMinutos} minutos</Text>
+              <Text style={styles.textDetails}><Text style={styles.textTitulo}>Idioma:</Text> {recorridoDetalle.recorrido.idioma}</Text>
+      </View>
+</View> 
       ):(null)}
   </View>
       )
@@ -124,6 +130,42 @@ const styles = StyleSheet.create({
       height: Dimensions.get("window").height,
       zIndex: -1,
     },
+    cardDetails:{
+      borderWidth: 3,
+      borderColor: "#20232a",
+      borderRadius: 5,
+      width: Dimensions.get("window").width,
+      height:( Dimensions.get("window").height)/3,
+      position: "relative",
+      backgroundColor: colors.PRIMARY_LIGHT
+    },
+    textDetails:{
+      color: colors.TURIST,
+      fontFamily: "openSansSemibold",
+      fontSize: 15,
+      marginTop: 15,
+      marginLeft: 15,
+    },
+    textTitulo:{
+      color: colors.TEXT_DARK,
+      fontFamily: "openSansSemibold",
+      fontSize: 17,
+      marginTop: 15,
+      marginLeft: 15,
+      textDecorationLine: 'underline',
+    },
+    title: {
+      textDecorationLine: 'underline',
+      marginTop: 0,
+      fontFamily: "openSansSemibold",
+      paddingVertical: 5,
+      backgroundColor: colors.PRIMARY_LIGHT,
+      color: "#20232a",
+      textAlign: "center",
+      fontSize: 20,
+      fontWeight: "bold"
+    }
+  
 });
 
 export default MochilaDetails;
