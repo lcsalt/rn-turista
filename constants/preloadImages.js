@@ -8,6 +8,8 @@ const iconGuiaHombre = require("../assets/images/iconGuiaHombre.png");
 const iconGuiaMujer = require("../assets/images/iconGuiaMujer.png");
 const iconGuiaGenerico = require("../assets/images/iconGuiaGenerico.png");
 const crowd = require("../assets/images/crowd.png");
+const iconGuiaMap = require("../assets/images/guia-globo-icono.png");
+const iconTuristaMap = require("../assets/images/turista-globo-icono.png");
 
 export default {
   inicioImg,
@@ -19,5 +21,12 @@ export default {
   iconGuiaHombre,
   iconGuiaMujer,
   iconGuiaGenerico,
+<<<<<<< HEAD
   crowd
+=======
+  crowd,
+  iconGuiaMap,
+  iconTuristaMap,
+  
+>>>>>>> 95d4d440a8dbd3fca79237afd8afb23fcfe3503c
 };

@@ -42,6 +42,8 @@ const HomeTurista = (props) => {
         setLocation(location);
         if (estadoRecorrido == "Por empezar") { 
           props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoActivo" }],}));
+        }else if (estadoRecorrido == "En curso"){
+          props.navigation.dispatch(CommonActions.reset({index: 0,routes: [{ name: "RecorridoEnCurso" }],}));
         }
       }
     })();
@@ -203,7 +205,8 @@ const HomeTurista = (props) => {
                 return marker.coordinates
                })}
                strokeColor={colors.PRIMARY}
-               strokeWidth={3}
+               strokeWidth={2}
+               lineCap={'round'}
               />
             )
             :(null)}

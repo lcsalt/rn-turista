@@ -109,7 +109,8 @@ const MultiCoordinatePicker = ({ field, form, ...props }) => {
                 <Polyline
                   coordinates={allCoordinates}
                   strokeColor={colors.PRIMARY}
-                  strokeWidth={4}
+                  strokeWidth={2}
+                  lineCap={'round'}
                 />
 
 

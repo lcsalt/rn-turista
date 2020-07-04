@@ -6,8 +6,9 @@ import chalk from 'chalk'
 import { setLogout } from '../../store/actions/auth';
 import { colors, images} from "../../constants";
 import Boton from "../../components/Boton";
+import LinkBoton from "../../components/LinkBoton"
 import TextoRecuadrado from "../../components/TextoRecuadrado";
-import { set } from "react-native-reanimated";
+
 
   
 
@@ -45,7 +46,7 @@ function getValues(){
         .then((res) =>{
           if (res.status === 200) {
             let data = res.json().then(data => {
-              setLoading(false);
+              
               setApellido(data.user.apellido);
               setNombre(data.user.nombre)
               setFechaDeNacimiento((data.user.fechaDeNacimiento).split("T", 1));
@@ -64,6 +65,7 @@ function getValues(){
               } else{
                 setFoto(images.iconoTuristas)
               }
+              setLoading(false);
               return true;
             });       
 
@@ -93,11 +95,14 @@ return (
       <View style={styles.screen}>
         <ImageBackground source={images.backgroundImg}  style={{width: '100%', height: '100%'}}>
         <View style={styles.perfil}>
-        <Image
-          source = {foto}
-          style={styles.image}
-          resizeMode="contain"
-        ></Image>
+          {loading ? (null):(
+            <Image
+            source = {foto}
+            style={styles.image}
+            resizeMode="contain"
+          ></Image>
+          )}
+        
         <TextoRecuadrado text={role}/>
 
         <Text style={styles.nombre}>{apellido} {nombre}</Text>
@@ -114,9 +119,7 @@ return (
         <Text style={styles.text}> </Text>
         
         <Boton text={"Editar Perfil"} onPress={()=> handleEdit() }  />
-        <TouchableOpacity onPress={handleLogout} style={styles.horizontalButton}>
-          <Text style={styles.buttonText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
+        <LinkBoton text={"Cerrar sesión"} onPress={handleLogout} textStyle={{color: colors.TURIST, marginTop: 10}} />
         </View>
         </ImageBackground>
       </View>
@@ -142,10 +145,6 @@ const styles = StyleSheet.create({
       paddingHorizontal: Dimensions.get('window').width * 9 / 100,
       alignItems: "center",
     },
-    image: {
-      width: "90%",
-      height: "54%",
-    },
     textInfo: {
       fontFamily: "openSansSemibold",
       fontSize: 12,
@@ -161,8 +160,8 @@ const styles = StyleSheet.create({
       borderBottomWidth: StyleSheet.hairlineWidth
     },
     image: {
-      width: "50%",
-      height: "24%",
+      width: "47%",
+      height: "21%",
     },
     horizontalButton: {
       width: 125,

@@ -3,7 +3,10 @@ import { View, Image,TouchableOpacity, Text, StyleSheet, Dimensions } from "reac
 import { useDispatch, useSelector } from 'react-redux';
 
 import { cancelarRecorrido } from '../store/actions/recorridoActivo';
+import { iniciarRecorrido } from '../store/actions/recorridoActivo';
+
 import Boton from "./Boton.js"
+import LinkBoton from "./LinkBoton.js"
 import { colors, images } from "../constants";
 
 const RecorridoActivoGuia = (props) => {
@@ -22,17 +25,19 @@ const RecorridoActivoGuia = (props) => {
   
   const dispatch = useDispatch();
   const handleCancelarRecorrido = () => {
-    console.log('//handle cancel 1 // handlecancelarRecorridoBoton')
     dispatch(cancelarRecorrido(userToken, recorridoId))
     .then((res)=>  props.cancelarRecorrido())
-    
+  };
+  const handleIniciarRecorrido = () => {
+    dispatch(iniciarRecorrido(userToken, recorridoId))
+    .then((res)=>  props.comenzarRecorrido())
   };
 
 
     return (
         <View>
             <View style={styles.recorridoPorEmpezar}>
-    <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{props.nombreRecorrido}</Text>
+                <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{props.nombreRecorrido}</Text>
                 <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
                     <Image
                         source={images.crowd}
@@ -40,7 +45,7 @@ const RecorridoActivoGuia = (props) => {
                     ></Image>
                     <Text style={{ ...styles.text, marginLeft: 10, }}>{usuariosInscriptos}/{props.maxParticipantes} Turistas Inscriptos</Text>
                 </View>
-
+                <LinkBoton onPress={handleIniciarRecorrido} text={'Iniciar Recorrido'}/>
             </View>
             <View style={styles.horarioComienzoBox}>
                 <Text style={{ ...styles.text, fontSize: 12, }}>Horario comienzo</Text>

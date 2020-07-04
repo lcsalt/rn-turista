@@ -4,8 +4,14 @@ import PropTypes from "prop-types";
 import { colors } from "../constants";
 
 const TextoRecuadrado = (props) => {
+  let style;
+  if (props.text == 'Guía'){
+    style = [styles.textRecuadro, styles.colorsGuia]
+  }else{
+    style = [styles.textRecuadro, styles.colorsTurista]
+  }
     return (
-      <Text style={styles.textRecuadro}>{props.text}</Text>
+      <Text style={style}>{props.text.toUpperCase()}</Text>
   );
 };
 
@@ -17,17 +23,23 @@ TextoRecuadrado.propTypes = {
   const styles = StyleSheet.create({
   textRecuadro:{
     fontFamily: "openSansSemibold",
-    fontSize: 20,
-    color: TextoRecuadrado.propTypes.text==="Guia" ? colors.GUIDE : colors.TURIST,
+    fontSize: 14,
     marginBottom: 10,
+    marginTop: 10,
     textAlign:'center',
-    paddingTop:10,
-    paddingBottom:5,
-    paddingLeft:10,
-    paddingRight:10,
+    paddingTop:6,
+    paddingLeft:15,
+    paddingRight:15,
     borderRadius: 10,
-    borderWidth: 5,
-    borderColor: TextoRecuadrado.propTypes.text==="Guia" ? colors.GUIDE : colors.TURIST 
+    borderWidth: 3,
+  },
+  colorsGuia: {
+    color: colors.GUIDE,
+    borderColor: colors.GUIDE,
+  },
+  colorsTurista: {
+    color: colors.TURIST,
+    borderColor: colors.TURIST,
   }
 })
 
