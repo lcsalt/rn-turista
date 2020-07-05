@@ -55,17 +55,17 @@ const Mochila = ({ navigation },props) =>{
 if(loading){
   {getValues()}
   return(
-  <View style={styles.screen}>
-        <ActivityIndicator size="small" color={colors.PRIMARY} />
-        <Text style={styles.text}>cargando registro...</Text>
+    <View style={{...styles.screen, alignItems:'center',justifyContent:'center'}}>
+        <ActivityIndicator size="large" color={colors.PRIMARY} />
+        <Text style={{...styles.text, marginTop: 20, color: colors.TEXT}}>Cargando mochila...</Text>
       </View>
 )} else {
   if(recorridos === null || recorridos.length === 0){
 console.log(status)
     return (
       <View style={styles.screen}>
-        <Text style={styles.text}>Mochila</Text>
-        <Text style={styles.text}>Una mochila en donde se guardan tus ultimos recorridos, sitios cerca recomendados
+        <Text style={{...styles.text, marginBottom: 20, fontSize: 20}}>Mochila</Text>
+        <Text style={{...styles.text, color: colors.TEXT}}>Una mochila en donde se guardan tus ultimos recorridos, sitios cerca recomendados
          y preguntas frecuentes.</Text>
       </View>
     );
@@ -83,8 +83,9 @@ function Item({ title }) {
 <ImageBackground source={images.backgroundImg}  style={{width: '100%', height: '100%'}}>
   
     <SafeAreaView >
+    
+    <Text style={styles.title}> Reviví tus recorridos </Text>
     <View style={styles.screen}>
-  <Text style={styles.title}> Revivi tus recorridos: </Text>
       <FlatList
         data={recorridos}
         renderItem={({ item }) => <Item title={item}  />}
@@ -106,10 +107,11 @@ function Item({ title }) {
 
 const styles = StyleSheet.create({
     screen: {
+      
       alignSelf: 'center',
-      marginVertical: Dimensions.get('window').height * 7 / 100,
-      height: Dimensions.get('window').height * 85 / 100,
-      width: Dimensions.get('window').width * 90 / 100,
+      marginVertical: Dimensions.get('window').height * 3 / 100,
+      height: Dimensions.get('window').height *65 / 100,
+      width: Dimensions.get('window').width * 85 / 100,
       backgroundColor: colors.WHITE_DARK,
       borderRadius: 10,
       alignItems: 'center',
@@ -118,11 +120,11 @@ const styles = StyleSheet.create({
     text: {
       fontFamily: "openSansSemibold",
       fontSize: 14,
-      color: colors.PRIMARY_DARK,
+      color: colors.PRIMARY,
       textAlign: 'center'
     },
     horizontalButton: {
-      width: 125,
+      width: '100%',
       height: 30,
       backgroundColor: colors.WHITE,
       borderRadius:20,
@@ -130,29 +132,24 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignSelf: 'center',
       marginTop: 10,
-      shadowColor: colors.PRIMARY_VERYDARK, 
-      shadowOffset: { height: 1, width: 1 }, 
-      shadowOpacity: 1, 
-      shadowRadius: 1, 
-      elevation: 2, 
     },
     item: {
+      width: 200,
       backgroundColor: colors.PRIMARY_LIGHT,
       padding: 10,
-      marginVertical: 8,
-      marginHorizontal: 10,
+      marginVertical: 12,
       alignItems: "center",
       justifyContent: "center",
-      borderWidth: 4,
-      borderColor: "#20232a",
+      borderWidth:1,
+      borderColor: colors.PRIMARY_LIGHT,
       borderRadius: 6,
     },
     title: {
-      marginTop: 0,
-      textDecorationLine: 'underline',
+      marginTop: 50,
+      marginBottom: 10,
       fontFamily: "openSansSemibold",
       paddingVertical: 5,
-      color: "#20232a",
+      color: colors.WHITE,
       textAlign: "center",
       fontSize: 20,
       fontWeight: "bold"
