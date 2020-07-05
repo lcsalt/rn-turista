@@ -32,7 +32,7 @@ const IniciarRecorrido = (props) => {
     if (isLoading){
       loadValues();
     }
-    return () => {setIsLoading(true) };
+    return () => {setIsLoading(false) };
     }, []);
 
   const userToken = useSelector((state) => state.auth.token);

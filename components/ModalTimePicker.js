@@ -12,19 +12,26 @@ import {Picker} from '@react-native-community/picker';
 
 import LinkBoton from "./LinkBoton.js";
 import { colors } from "../constants";
+import { set } from "react-native-reanimated";
 
 const ModalTimePicker = (props) => {
   const [timeString, setTimeString] = useState("");
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [fueElegida, setFueElegida] = useState(false);
   const [hora, setHora] = useState(0);
   const [minutos, setMinutos] = useState(0);
+  const [minutosTexto, setMinutosTexto] = useState('00');
   let allHours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
   let pickableMinutes = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,
                                                          23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,
                                                          43,44,45,46,47,48,4,50,51,52,53,54,55,56,57,58,59];
   const inputStyles = [styles.border, styles.shadow];
   
-  
+  useEffect(()=>{
+    if (!fueElegida){
+      setHora(new Date().getHours()+1)
+    }
+  })
    const hours = new Date().getHours();
    const minutes = new Date().getMinutes();
    const pickableHours = allHours.filter((hora) => {
@@ -40,6 +47,12 @@ const ModalTimePicker = (props) => {
   };
   const handleConfirm = () => {
     hideTimePicker();
+    setFueElegida(true);
+    if(minutos < 10){
+      setMinutosTexto('0'+minutos)
+    }else{
+      setMinutosTexto(minutos)
+    }
     const selectedTime = {hora: hora, minutos: minutos};
     props.setFieldValue(selectedTime);
   };
@@ -51,7 +64,7 @@ const ModalTimePicker = (props) => {
         style={{
           overflow: "hidden",
           paddingBottom: 5,
-          width: "70%",
+          width: "80%",
           maxWidth: "80%",
           marginTop: 15,
           marginBottom: 15,
@@ -59,7 +72,12 @@ const ModalTimePicker = (props) => {
       >
         <View style={inputStyles}>
           <View style={styles.input}>
-            <Text style={{textAlign: "center",fontSize: 18,}}> {hora}:{minutos} hs </Text>
+            {fueElegida? (
+              <Text style={{textAlign: "center",fontSize: 18,}}> {hora}:{minutosTexto} hs </Text>
+            ):(
+              <Text style={{ color: colors.TEXT, textAlign: "center",fontSize: 16,}}> Presione para elegir </Text>
+            )}
+            
           </View>
         </View>
       </TouchableOpacity>
