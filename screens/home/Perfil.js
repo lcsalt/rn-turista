@@ -85,8 +85,10 @@ if(loading){
   {getValues()}
   return(
   <View style={styles.screen}>
-        <ActivityIndicator size="small" color={colors.PRIMARY} />
-        <Text style={styles.text}>cargando registro...</Text>
+        <ActivityIndicator size="large" color={colors.PRIMARY} />
+        <Text style={{fontFamily: "openSansSemibold",
+        fontSize: 14,
+        color: colors.TEXT, marginTop:20}}>Cargando...</Text>
       </View>
 )}
 
@@ -119,7 +121,7 @@ return (
         <Text style={styles.text}> </Text>
         
         <Boton text={"Editar Perfil"} onPress={()=> handleEdit() }  />
-        <LinkBoton text={"Cerrar sesión"} onPress={handleLogout} textStyle={{color: colors.TURIST, marginTop: 10}} />
+        <LinkBoton text={"Cerrar sesión"} onPress={handleLogout} textStyle={{color: colors.PRIMARY, marginTop: 10}} />
         </View>
         </ImageBackground>
       </View>

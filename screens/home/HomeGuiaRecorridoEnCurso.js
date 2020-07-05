@@ -177,8 +177,8 @@ const HomeGuiaRecorridoEnCurso = (props) => {
             ) : (
                     //Pantalla de carga
                     <View>
-                        <Text style={{ marginBottom: 20 }}>{text}</Text>
                         <ActivityIndicator size="large" color={colors.PRIMARY} />
+                        <Text style={{...styles.text, marginTop: 20}}>{text}</Text>
                     </View>
                 )}
         </View>

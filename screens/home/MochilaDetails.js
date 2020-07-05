@@ -32,11 +32,14 @@ const MochilaDetails= ({ route,navigation },props) =>{
     
   }}
   );
-  let text = 'Waiting..';
+  let text = 'Cargando..';
   if (!location) {
-    return(<View>
-      <Text style={styles.screen}>{text}</Text>
+    return(<View style={styles.screen}>
+      
       <ActivityIndicator size="large" color={colors.PRIMARY} />
+      <Text style={{fontFamily: "openSansSemibold",
+        fontSize: 14,
+        color: colors.TEXT,marginTop:20}}>{text}</Text>
     </View>)
   } else {
 
@@ -108,13 +111,11 @@ const MochilaDetails= ({ route,navigation },props) =>{
 const styles = StyleSheet.create({
     conteiner: {
       flex: 1,
-      backgroundColor: colors.WHITE,
      // alignItems: "center",
     //  justifyContent: "center",
     },
     screen: {
       flex: 1,
-      backgroundColor: colors.WHITE,
       alignItems: "center",
       justifyContent: "center",
     },
@@ -131,20 +132,20 @@ const styles = StyleSheet.create({
       zIndex: -1,
     },
     cardDetails:{
-      borderWidth: 3,
-      borderColor: "#20232a",
+      borderWidth: 0,
       borderRadius: 5,
-      width: Dimensions.get("window").width,
+      width: Dimensions.get("window").width ,
       height:( Dimensions.get("window").height)/3,
       position: "relative",
-      backgroundColor: colors.PRIMARY_LIGHT
+      backgroundColor: colors.WHITE
     },
     textDetails:{
-      color: colors.TURIST,
+      justifyContent: 'center',
+      color: colors.TEXT,
       fontFamily: "openSansSemibold",
       fontSize: 15,
       marginTop: 15,
-      marginLeft: 15,
+      marginHorizontal: 50,
     },
     textTitulo:{
       color: colors.TEXT_DARK,
@@ -152,15 +153,13 @@ const styles = StyleSheet.create({
       fontSize: 17,
       marginTop: 15,
       marginLeft: 15,
-      textDecorationLine: 'underline',
     },
     title: {
-      textDecorationLine: 'underline',
       marginTop: 0,
       fontFamily: "openSansSemibold",
       paddingVertical: 5,
-      backgroundColor: colors.PRIMARY_LIGHT,
-      color: "#20232a",
+      backgroundColor: colors.PRIMARY,
+      color: colors.WHITE,
       textAlign: "center",
       fontSize: 20,
       fontWeight: "bold"

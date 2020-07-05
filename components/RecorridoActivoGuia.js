@@ -38,10 +38,11 @@ const RecorridoActivoGuia = (props) => {
         <View>
             <View style={styles.recorridoPorEmpezar}>
                 <Text style={{ fontFamily: "openSansBold", fontSize: 16, color: colors.TEXT_DARK, }}>{props.nombreRecorrido}</Text>
-                <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center", }}>
                     <Image
                         source={images.crowd}
-                        style={{ width: "25%" }}
+                        style={{ resizeMode: 'contain',
+                        height:70 }}
                     ></Image>
                     <Text style={{ ...styles.text, marginLeft: 10, }}>{usuariosInscriptos}/{props.maxParticipantes} Turistas Inscriptos</Text>
                 </View>

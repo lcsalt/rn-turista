@@ -23,7 +23,7 @@ const authenticationStore = createStore(authenticationReducer, applyMiddleware(t
 
 export default function App() {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
-
+  console.disableYellowBox = true; 
   if (!isLoadingComplete) {
     return (
       <AppLoading
