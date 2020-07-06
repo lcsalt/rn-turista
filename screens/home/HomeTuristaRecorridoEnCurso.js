@@ -79,14 +79,19 @@ const HomeGuiaRecorridoEnCurso = (props) => {
             
             //Recibe ubicacion de todos los turistas
             socket.on("locationsTuristas", (locations) => {
+                if (locations){
+                    
                 console.log('3.b// recibo locacion de todos los turistas')
                 const newTuristasLocations = locations.filter((turistaData) => {
                     return turistaData.nombre != miNombre;
                   });
                   setTuristasLocations([...newTuristasLocations]);
+
+                }
             });
             socket.on('guiaLocation', (location) =>{
                 console.log('2.b// recibo locacion de guia (turista)')
+                console.log(location);
                 setGuiaLocation(location);
             })
             socket.on('finRecorrido', ()=>{

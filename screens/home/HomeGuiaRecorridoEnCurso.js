@@ -81,7 +81,7 @@ const HomeGuiaRecorridoEnCurso = (props) => {
             socket.on("locationTurista", (location) => {
                 console.log('2// recibo locacion de turista (guia)')
                 if (!turistasLocations) {
-                    console.log('llegue aca?')
+                    console.log('llegue aca?', location)
                     setTuristasLocations([location]);
                     setTuristasNombres([location.nombre]);
                   } else {
@@ -97,8 +97,12 @@ const HomeGuiaRecorridoEnCurso = (props) => {
                     }
                   } 
                   
-                  console.log('3// envio locaciones de turistas a grupo')
-                socket.emit('updateLocationsTuristas', ({locations: turistasLocations, key: recorridoActivoId.toString()}));         //envia la ubicacion de todos los turistas a node para actualizar en la   
+                  
+                  if(turistasLocations){
+                    console.log('3// envio locaciones de turistas a grupo', turistasLocations)
+                    socket.emit('updateLocationsTuristas', ({locations: turistasLocations, key: recorridoActivoId.toString()}));         //envia la ubicacion de todos los turistas a node para actualizar en la   
+                  }
+                
             });
         }
         return () => { unmounted = true };
