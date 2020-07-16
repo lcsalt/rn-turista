@@ -83,7 +83,7 @@ const HomeGuiaRecorridoEnCurso = (props) => {
                     
                 console.log('3.b// recibo locacion de todos los turistas')
                 const newTuristasLocations = locations.filter((turistaData) => {
-                    return turistaData.nombre != miNombre;
+                    return turistaData.nombre != userName;
                   });
                   setTuristasLocations([...newTuristasLocations]);
 

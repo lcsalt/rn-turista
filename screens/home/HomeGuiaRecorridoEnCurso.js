@@ -84,6 +84,8 @@ const HomeGuiaRecorridoEnCurso = (props) => {
                     console.log('llegue aca?', location)
                     setTuristasLocations([location]);
                     setTuristasNombres([location.nombre]);
+                    console.log('3// envio locaciones de turistas a grupo', turistasLocations)
+                    socket.emit('updateLocationsTuristas', ({locations: [location], key: recorridoActivoId.toString()})); 
                   } else {
                     if (turistasNombres.includes(location.nombre)) {
                       const newTuristasLocations = turistasLocations.filter((turistaData) => {
@@ -91,16 +93,21 @@ const HomeGuiaRecorridoEnCurso = (props) => {
                       });
                       newTuristasLocations.push(location);
                       setTuristasLocations([...newTuristasLocations]);
+                      console.log('3// envio locaciones de turistas a grupo', turistasLocations)
+                      socket.emit('updateLocationsTuristas', ({locations: [...newTuristasLocations], key: recorridoActivoId.toString()})); 
                     } else {
                       setTuristasLocations([...turistasLocations, location]);
                       setTuristasNombres([...turistasNombres, location.nombre]);
+                      console.log('3// envio locaciones de turistas a grupo', turistasLocations)
+                      socket.emit('updateLocationsTuristas', ({locations: [...turistasLocations], key: recorridoActivoId.toString()})); 
+                    
                     }
                   } 
                   
                   
                   if(turistasLocations){
-                    console.log('3// envio locaciones de turistas a grupo', turistasLocations)
-                    socket.emit('updateLocationsTuristas', ({locations: turistasLocations, key: recorridoActivoId.toString()}));         //envia la ubicacion de todos los turistas a node para actualizar en la   
+                    
+                            //envia la ubicacion de todos los turistas a node para actualizar en la   
                   }
                 
             });
